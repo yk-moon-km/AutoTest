@@ -1,0 +1,43 @@
+<!--&lt;!&ndash;image_list.html&ndash;&gt;-->
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Images in {{ subfolder }}</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>Test Result</h1>-->
+<!--    <a href="{{ url_for('task_status') }}">Go Back</a>-->
+<!--    <ul>-->
+<!--        {% for image in images %}-->
+<!--            <li>-->
+<!--                <img src="{{ url_for('result_file', filename=subfolder + '/' + image) }}" alt="{{ image }}" style="max-width: 20%; height: auto;">-->
+<!--                <p>{{ image }}</p>-->
+<!--            </li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Images in {{ subfolder }}</title>
+</head>
+<body>
+    <h1>Test Result</h1>
+    <a href="{{ url_for('task_status') }}">Go Back</a>
+    <ul>
+        {% for image in images %}
+            <li>
+                <img src="{{ url_for('result_file', filename=subfolder + '/' + image) }}" alt="{{ image }}" style="max-width: 20%; height: auto;">
+                <p>{{ image }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
