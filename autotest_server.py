@@ -116,12 +116,12 @@ def upload_apk():
     file1 = request.files['file1']
 
     # 다음 서브 폴더 번호를 결정하고 폴더 생성
-    next_folder_number = get_next_folder_number(TEST_FOLDER)
-    new_folder_path = os.path.join(TEST_FOLDER, f'TC{next_folder_number}')
-    os.makedirs(new_folder_path, exist_ok=True)
+    # next_folder_number = get_next_folder_number(TEST_FOLDER)
+    # new_folder_path = os.path.join(TEST_FOLDER, f'TC{next_folder_number}')
+    # os.makedirs(new_folder_path, exist_ok=True)
 
     # 파일을 새 폴더에 저장
-    filepath1 = os.path.join(new_folder_path, file1.filename)
+    filepath1 = os.path.join(FOLDER_PATH, file1.filename)
     file1.save(filepath1)
 
     return redirect(url_for('index'))

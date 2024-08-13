@@ -19,6 +19,26 @@ then
 else
     echo "Homebrew가 이미 설치되어 있습니다."
 fi
+# 12. FFmpeg 설치 및 경로 설정
+if ! command -v ffmpeg &> /dev/null
+then
+    echo "FFmpeg가 설치되어 있지 않습니다. FFmpeg를 설치합니다."
+    brew install ffmpeg
+else
+    echo "FFmpeg가 이미 설치되어 있습니다."
+fi
+
+# FFmpeg 경로 추가
+FFMPEG_PATH=$(brew --prefix ffmpeg)/bin
+if ! grep -q "$FFMPEG_PATH" <<< "$PATH"; then
+    echo "export PATH=\$PATH:$FFMPEG_PATH" >> ~/.zshrc
+    echo "export PATH=\$PATH:$FFMPEG_PATH" >> ~/.bash_profile
+    source ~/.zshrc
+    source ~/.bash_profile
+    echo "FFmpeg 경로가 PATH에 추가되었습니다."
+else
+    echo "FFmpeg 경로가 이미 PATH에 추가되어 있습니다."
+fi
 
 # 2. Android SDK 설치
 if ! command -v sdkmanager &> /dev/null
