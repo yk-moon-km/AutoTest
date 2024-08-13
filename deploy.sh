@@ -1,24 +1,93 @@
 #!/bin/bash
 # MacOS용 배포 스크립트
 
-# 1. Python 설치
-# Homebrew가 설치되어 있는지 확인
+#####
+#!/bin/bash
+# Android SDK 및 Appium 설정 스크립트
+
+
+
+
+#######
+
+
+# 1. Homebrew 설치 (필요 시)
 if ! command -v brew &> /dev/null
 then
     echo "Homebrew가 설치되어 있지 않습니다. Homebrew를 설치합니다."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-
-# Python이 설치되어 있는지 확인
-if ! command -v python3 &> /dev/null
-then
-    echo "Python3가 설치되어 있지 않습니다. Python3를 설치합니다."
-    brew install python
 else
-    echo "Python3가 이미 설치되어 있습니다."
+    echo "Homebrew가 이미 설치되어 있습니다."
 fi
 
-# 2. 가상 환경 설정
+# 2. Android SDK 설치
+if ! command -v sdkmanager &> /dev/null
+then
+    echo "Android SDK가 설치되어 있지 않습니다. Android SDK를 설치합니다."
+    brew install --cask android-sdk
+else
+    echo "Android SDK가 이미 설치되어 있습니다."
+fi
+
+# 3. Android SDK 환경 변수 설정
+ANDROID_HOME="$HOME/Library/Android/sdk"
+echo "Setting up Android SDK environment variables..."
+
+if grep -q "export ANDROID_HOME" ~/.zshrc; then
+    echo "ANDROID_HOME already set in ~/.zshrc"
+else
+    echo "export ANDROID_HOME=$ANDROID_HOME" >> ~/.zshrc
+    echo 'export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH' >> ~/.zshrc
+    source ~/.zshrc
+fi
+
+if grep -q "export ANDROID_HOME" ~/.bash_profile; then
+    echo "ANDROID_HOME already set in ~/.bash_profile"
+else
+    echo "export ANDROID_HOME=$ANDROID_HOME" >> ~/.bash_profile
+    echo 'export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH' >> ~/.bash_profile
+    source ~/.bash_profile
+fi
+
+# SDK 경로 확인
+if [ ! -d "$ANDROID_HOME" ]; then
+    echo "Error: Android SDK path '$ANDROID_HOME' does not exist."
+    exit 1
+else
+    echo "Android SDK path confirmed: $ANDROID_HOME"
+fi
+
+# adb devices 명령어로 장치 확인
+echo "Checking connected Android devices..."
+adb devices
+
+# 2. pyenv 설치 및 설정
+if ! command -v pyenv &> /dev/null
+then
+    echo "pyenv가 설치되어 있지 않습니다. pyenv를 설치합니다."
+    brew install pyenv
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
+    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
+    echo 'eval "$(pyenv init --path)"' >> ~/.zshrc
+    source ~/.zshrc
+else
+    echo "pyenv가 이미 설치되어 있습니다."
+fi
+
+# 3. Python 설치 (pyenv 사용)
+PYTHON_VERSION=3.8.10  # 필요에 따라 Python 버전을 변경하세요
+
+if ! pyenv versions | grep -q "$PYTHON_VERSION"
+then
+    echo "Python $PYTHON_VERSION 버전을 설치합니다."
+    pyenv install $PYTHON_VERSION
+else
+    echo "Python $PYTHON_VERSION 버전이 이미 설치되어 있습니다."
+fi
+
+pyenv global $PYTHON_VERSION
+
+# 4. 가상 환경 설정
 PROJECT_DIR="$(pwd)"
 VENV_DIR="$PROJECT_DIR/venv"
 
@@ -32,7 +101,7 @@ fi
 # 가상 환경 활성화
 source "$VENV_DIR/bin/activate"
 
-# 3. 패키지 설치
+# 5. 패키지 설치
 if [ -f "requirements.txt" ]; then
     echo "필요한 패키지를 설치합니다."
     pip install --upgrade pip
@@ -41,7 +110,7 @@ else
     echo "requirements.txt 파일이 없습니다. 패키지 설치를 건너뜁니다."
 fi
 
-# 4. Redis 설치 및 실행 (옵션)
+# 6. Redis 설치 및 실행 (옵션)
 if ! command -v redis-server &> /dev/null
 then
     echo "Redis가 설치되어 있지 않습니다. Redis를 설치합니다."
@@ -56,7 +125,7 @@ else
     echo "Redis 서버가 이미 실행 중입니다."
 fi
 
-# 5. Appium 설치 및 실행 (옵션)
+# 7. Appium 설치 및 실행 (옵션)
 if ! command -v appium &> /dev/null
 then
     echo "Appium이 설치되어 있지 않습니다. Appium을 설치합니다."
@@ -72,13 +141,13 @@ tell application "Terminal"
 end tell
 EOF
 
-# 6. Celery 워커 실행 (새 터미널 창에서 실행)
+# 8. Celery 워커 실행 (새 터미널 창에서 실행)
 osascript <<EOF
 tell application "Terminal"
-    do script "source $VENV_DIR/bin/activate && celery -A celery_app worker --loglevel=info"
+    do script "cd $PROJECT_DIR && source $VENV_DIR/bin/activate && celery -A autotest_server.celery worker --loglevel=info"
 end tell
 EOF
 
-# 7. Flask 서버 실행
+# 9. Flask 서버 실행
 echo "Flask 서버를 시작합니다."
-python3 autotest_server.py
+python autotest_server.py
