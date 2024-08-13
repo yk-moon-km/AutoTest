@@ -450,6 +450,18 @@
     <!-- Details Form -->
     <div class="section">
         <form method="post" action="{{ url_for('upload_files') }}">
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="action" value="versioncompare"> Version Compare (2개의 apk를 선택해주세요)
+                </label><br>
+                <label>
+                    <input type="radio" name="action" value="regression"> Result Compare(1개의 apk를 선택해주세요)
+                </label><br>
+            </div>
+            <div class="form-group">
+                <label for="account">Account(KM 구독 상태의 구글 계정)광고 노출시 정상동작 불가</label>
+                <textarea id="account" name="account" required>yk.moon@kinemaster.com</textarea>
+            </div>
             <h2>Select Files</h2>
             <div class="form-group grid-container">
                 {% for file in apk_files %}
