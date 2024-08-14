@@ -3,6 +3,10 @@ import time
 from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.webdriver import AppiumOptions
+from appium.webdriver.common.touch_action import TouchAction
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from videoCompare import videoComapre
 from pathlib import Path
 from datetime import datetime
@@ -354,22 +358,29 @@ class AndroidTest:
         el.click()
         el = self.find_button('ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
         el.click()
-        # download 폴더 가기
 
-        # el = self.find_button('ID', "Show roots")
+
+
+        # # # 원하는 파일 선택하기
+        # # target_file = WebDriverWait(driver, 20).until(
+        # #     EC.presence_of_element_located((By.XPATH, "//android.widget.TextView[@text='example.txt']"))
+        # # )
+        # # target_file.click()
+        #
+        # el = self.find_button('UI',"new UiSelector().description(\"Show roots\")")
         # if el:
         #     el.click()
-
-        el = self.find_button('UI',"new UiSelector().description(\"Show roots\")")
-        if el:
-            el.click()
-        el = self.find_button('UI',"new UiSelector().text(\"Downloads\").instance(1)")
-        if el:
-            el.click()
-
-        el = self.find_button('UI',"new UiSelector().resourceId(\"com.google.android.documentsui:id/sub_menu_grid\")")
-        if el:
-            el.click()
+        # download_folder = WebDriverWait(self.driver, 20).until(
+        #     EC.presence_of_element_located((By.XPATH, "//android.widget.TextView[@text='Downloads']"))
+        # )
+        # download_folder.click()
+        # # el = self.find_button('UI',"new UiSelector().text(\"Downloads\")")
+        # # if el:
+        # #     el.click()
+        #
+        # el = self.find_button('UI',"new UiSelector().resourceId(\"com.google.android.documentsui:id/sub_menu_grid\")")
+        # if el:
+        #     el.click()
 
 
 
