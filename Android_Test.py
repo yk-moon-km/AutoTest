@@ -3,10 +3,6 @@ import time
 from appium import webdriver
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.webdriver import AppiumOptions
-from appium.webdriver.common.touch_action import TouchAction
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from videoCompare import videoComapre
 from pathlib import Path
 from datetime import datetime
@@ -104,8 +100,8 @@ class AndroidTest:
         return testfile
 
     def version_compare_tc(self, loacal_file, loacal_path, remote_path, count):
-        file1 = self.install_tc(self.version1, loacal_file, loacal_path, remote_path)
-        file2 = self.install_tc(self.version2, loacal_file, loacal_path, remote_path)
+        file1 = self.install_tc(self.version1, loacal_file, loacal_path, remote_path,count)
+        file2 = self.install_tc(self.version2, loacal_file, loacal_path, remote_path,count)
         return file1, file2
 
     def app_install_login(self, account):
@@ -152,18 +148,18 @@ class AndroidTest:
         self.app_install_login(self.account)
         self.mix_download()
 
-    def install_tc(self, version, filename, localpath, remotepath):
+    def install_tc(self, version, filename, localpath, remotepath,count):
         self.apk_install(version)
-        self.driver.activate_app('com.nexstreaming.app.kinemasterfree')
-
         try:
             self._push_file(localpath + filename, remotepath + filename)
         except subprocess.CalledProcessError as e:
             print(f"File upload failed: {e.stderr.decode('utf-8')}")
             return "fail"
 
+        self.driver.activate_app('com.nexstreaming.app.kinemasterfree')
+
         self.app_install_login(self.account)
-        self._create_new_project()
+        self._create_new_project(count)
 
         el = self.find_button('ID', "com.nexstreaming.app.kinemasterfree:id/save_as_output_item_form_name")
         el.click()
@@ -234,8 +230,8 @@ class AndroidTest:
         try:
             local_path = f'{self.current_folder}/Test/TC{count}/kine/'
             local_file = f'tc{count}.kine'
-            remote_path = '/sdcard/Download/'
-            testvideofileName1 = self.install_tc(self.version1, local_file, local_path, remote_path)
+            remote_path = '/sdcard/Download/AutoTest/'
+            testvideofileName1 = self.install_tc(self.version1, local_file, local_path, remote_path,count)
             self.delete_files_in_remote_folder(remote_path)
             self.driver.quit()
 
@@ -264,7 +260,7 @@ class AndroidTest:
         try:
             local_path = f'{self.current_folder}/Test/TC{count}/kine/'
             local_file = f'tc{count}.kine'
-            remote_path = '/sdcard/Download/'
+            remote_path = '/sdcard/Download/AutoTest/'
             version1fileName, version2fileName = self.version_compare_tc( local_file, local_path, remote_path, count)
             self.delete_files_in_remote_folder(remote_path)
             self.driver.quit()
@@ -338,14 +334,29 @@ class AndroidTest:
         appium_server_url = 'http://localhost:4723'
         self.driver = webdriver.Remote(appium_server_url, options=appium_options)
 
+
+    # def _push_file(self, local_path, remote_path):
+    #     subprocess.run(['adb', '-s', self.capabilities.get("udid"), 'push', local_path, remote_path],
+    #                    check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
     def _push_file(self, local_path, remote_path):
-        subprocess.run(['adb', '-s', self.capabilities.get("udid"), 'push', local_path, remote_path],
-                       check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # 원격 디렉토리 경로 추출
+        remote_dir = remote_path.rsplit('/', 1)[0]
+
+        # 원격 디렉토리 존재 여부 확인
+        check_dir_command = ['adb', '-s', self.capabilities.get("udid"), 'shell','if [ ! -d "{0}" ]; then mkdir -p "{0}"; fi'.format(remote_dir)]
+
+        # 디렉토리 생성 명령어 실행
+        subprocess.run(check_dir_command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # 파일을 원격 장치로 푸시
+        push_command = ['adb', '-s', self.capabilities.get("udid"), 'push', local_path, remote_path]
+        subprocess.run(push_command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     def _press_key(self, keycode):
         self.driver.execute_script('mobile: pressKey', {"keycode": keycode})
 
-    def _create_new_project(self):
+    def _create_new_project(self,count):
         el = self.find_button('UI', "new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/navigation_bar_item_icon_view\").instance(2)")
         el.click()
         el = self.find_button('ID', "com.nexstreaming.app.kinemasterfree:id/new_project_button_imageview")
@@ -358,41 +369,36 @@ class AndroidTest:
         el.click()
         el = self.find_button('ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
         el.click()
+        # download 폴더 가기
 
 
-
-        # # # 원하는 파일 선택하기
-        # # target_file = WebDriverWait(driver, 20).until(
-        # #     EC.presence_of_element_located((By.XPATH, "//android.widget.TextView[@text='example.txt']"))
-        # # )
-        # # target_file.click()
-        #
-        # el = self.find_button('UI',"new UiSelector().description(\"Show roots\")")
-        # if el:
-        #     el.click()
-        # download_folder = WebDriverWait(self.driver, 20).until(
-        #     EC.presence_of_element_located((By.XPATH, "//android.widget.TextView[@text='Downloads']"))
-        # )
-        # download_folder.click()
-        # # el = self.find_button('UI',"new UiSelector().text(\"Downloads\")")
-        # # if el:
-        # #     el.click()
-        #
-        # el = self.find_button('UI',"new UiSelector().resourceId(\"com.google.android.documentsui:id/sub_menu_grid\")")
-        # if el:
-        #     el.click()
-
-
-
-        # el = self.find_button('ID',"Grid view")
-        # if el:
-        #     el.click()
-
-
-        #
-
-        el = self.find_button('ID', "com.google.android.documentsui:id/icon_thumb")
+        el = self.find_button('UI',"new UiSelector().description(\"Show roots\")")
+        if el:
+            el.click()
+        udid = self.capabilities.get("udid")
+        deviceName= get_device_name_by_udid(udid)
+        device_value =  f'//android.widget.TextView[@resource-id=\"android:id/title\" and @text=\"{deviceName}\"]'
+        el = self.find_button('xpath',device_value)
         el.click()
+
+        el = self.find_button('UI',"new UiSelector().resourceId(\"com.google.android.documentsui:id/sub_menu_list\")")
+        if not el:
+            el = self.find_button('UI',"new UiSelector().resourceId(\"com.google.android.documentsui:id/sub_menu_grid\")")
+            if el:
+                el.click()
+
+        el = self.find_button('UI',"new UiSelector().text(\"Download\")")
+        el.click()
+
+        el = self.find_button('UI',"new UiSelector().text(\"AutoTest\")")
+        el.click()
+
+
+        tc_string = f'//android.widget.TextView[@resource-id=\"android:id/title\" and @text=\"tc{count}.kine\"]'
+        el = self.find_button('xpath', tc_string)
+        if el:
+            el.click()
+
         el = self.find_button('ID', "com.android.permissioncontroller:id/permission_allow_button")
         el.click()
         el = self.find_button('ID', "com.android.permissioncontroller:id/permission_allow_button")
@@ -401,3 +407,53 @@ class AndroidTest:
         el.click()
         el = self.find_button('ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
         el.click()
+
+
+def get_device_name_by_udid(udid):
+    result = subprocess.run(['adb', '-s', udid, 'shell', 'getprop', 'ro.product.model'], stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE, text=True)
+
+    if result.returncode == 0:
+        device_name = result.stdout.strip()
+        return device_name
+    else:
+        raise Exception(f"Failed to get device name for {udid}: {result.stderr}")
+
+
+
+
+
+devices = ["9C241FFBA001L8"]#15151FDD4001GT"]# , "9C241FFBA001L8"]
+platform = ["Android", "iOS"]
+TCS = ["regression"] #regression versioncompare
+subTC = list(range(1, 2))  # "Create"
+failcount = 0
+Successcount = 0
+onetineTest_cnt = 0
+version1='uploads/7.4.18.33462.GP.apk'
+version2='uploads/7.4.17.33410.GP.apk'
+# __init__(self, tc, device='', account="yk.moon@kinemaster.com", version1='7.4.12.33222.GP.apk',
+#          version2='7.4.17.33410.GP.apk'):
+#
+# def test_seting(self, tc, account="", device='9C241FFBA001L8', version1='7.4.12.33222.GP.apk',
+#                 version2='7.4.17.33410.GP.apk'):
+
+# test = AndroidTest(action, account="yk.moon@kinemaster.com", version1=file_path1, version2=file_path2)
+test = AndroidTest("regression", "device","yk.moon@kinemaster.com", version1, version2)
+for tc in TCS:
+    for count in subTC:
+        if onetineTest_cnt == 0 and tc == "downandup":
+            onetineTest_cnt = 1
+        elif onetineTest_cnt == 1 and tc == "downandup":
+            continue
+
+        for device in devices:
+            test.test_seting(tc,"yk.moon@kinemaster.com", device,version1,version2)
+            retvalue = test.perform_actions(count)
+
+            if not retvalue:
+                failcount += 1
+            else:
+                Successcount += 1
+
+print(f"Total :{Successcount + failcount} Success : {Successcount} , Fail : {failcount}")
