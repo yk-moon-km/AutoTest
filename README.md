@@ -6,16 +6,16 @@ chomod +x *.sh
 
 # 섪치및 테스트 서버 실행 스크립트 실행 
 ./deploy.sh
-설치가 완료 되면 3개의 콘솔이 실행 
-1.appium(원격 디바이스 제어)
-2.celery(테스크 관리)
-3.flask(웹서버)
+1. 설치가 완료 되면 3개의 콘솔이 실행 
+    1.1 appium(원격 디바이스 제어)
+    1.2 celery(테스크 관리)
+    1.3 flask(웹서버)
 
 # 테스트 방법
 1. Test를 하기위한 device연결
-    1.1 디바이스 언어 설정 영어
-    1.2 최초디바이스 연결시 kinemaster 실행 -> Edit -> new project -> import -> file browser download폴더 선택 -> 그리드 보기 상태로 적용
-    1.3 테스트 디바이스에 이미 설치된 kinemaster는 삭제 하고 테스트를위한 버전으로 새로 설치됨
+    1.1. 디바이스 언어 설정 영어
+    1.2. 최초디바이스 연결시 kinemaster 실행 -> Edit -> new project -> import -> file browser download폴더 선택 -> 그리드 보기 상태로 적용
+    1.3. 테스트 디바이스에 이미 설치된 kinemaster는 삭제 하고 테스트를위한 버전으로 새로 설치됨
 2. 브라우저에서 127.0.0.1:5000 접속
 3. 맨 아레에 있는 Upload Apk로 테스트가 필요한 apk를 업로드 
 4. upload TC를 통해서 테스트할 프로젝트 및 비교를 위한 결과 파일 업로드 
