@@ -423,37 +423,37 @@ def get_device_name_by_udid(udid):
 
 
 
-devices = ["9C241FFBA001L8"]#15151FDD4001GT"]# , "9C241FFBA001L8"]
-platform = ["Android", "iOS"]
-TCS = ["regression"] #regression versioncompare
-subTC = list(range(1, 2))  # "Create"
-failcount = 0
-Successcount = 0
-onetineTest_cnt = 0
-version1='uploads/7.4.18.33462.GP.apk'
-version2='uploads/7.4.17.33410.GP.apk'
-# __init__(self, tc, device='', account="yk.moon@kinemaster.com", version1='7.4.12.33222.GP.apk',
-#          version2='7.4.17.33410.GP.apk'):
-#
-# def test_seting(self, tc, account="", device='9C241FFBA001L8', version1='7.4.12.33222.GP.apk',
-#                 version2='7.4.17.33410.GP.apk'):
+# devices = ["9C241FFBA001L8"]#15151FDD4001GT"]# , "9C241FFBA001L8"]
+# platform = ["Android", "iOS"]
+# TCS = ["regression"] #regression versioncompare
+# subTC = list(range(1, 2))  # "Create"
+# failcount = 0
+# Successcount = 0
+# onetineTest_cnt = 0
+# version1='uploads/7.4.18.33462.GP.apk'
+# version2='uploads/7.4.17.33410.GP.apk'
+# # __init__(self, tc, device='', account="yk.moon@kinemaster.com", version1='7.4.12.33222.GP.apk',
+# #          version2='7.4.17.33410.GP.apk'):
+# #
+# # def test_seting(self, tc, account="", device='9C241FFBA001L8', version1='7.4.12.33222.GP.apk',
+# #                 version2='7.4.17.33410.GP.apk'):
 
-# test = AndroidTest(action, account="yk.moon@kinemaster.com", version1=file_path1, version2=file_path2)
-test = AndroidTest("regression", "device","yk.moon@kinemaster.com", version1, version2)
-for tc in TCS:
-    for count in subTC:
-        if onetineTest_cnt == 0 and tc == "downandup":
-            onetineTest_cnt = 1
-        elif onetineTest_cnt == 1 and tc == "downandup":
-            continue
+# # test = AndroidTest(action, account="yk.moon@kinemaster.com", version1=file_path1, version2=file_path2)
+# test = AndroidTest("regression", "device","yk.moon@kinemaster.com", version1, version2)
+# for tc in TCS:
+#     for count in subTC:
+#         if onetineTest_cnt == 0 and tc == "downandup":
+#             onetineTest_cnt = 1
+#         elif onetineTest_cnt == 1 and tc == "downandup":
+#             continue
 
-        for device in devices:
-            test.test_seting(tc,"yk.moon@kinemaster.com", device,version1,version2)
-            retvalue = test.perform_actions(count)
+#         for device in devices:
+#             test.test_seting(tc,"yk.moon@kinemaster.com", device,version1,version2)
+#             retvalue = test.perform_actions(count)
 
-            if not retvalue:
-                failcount += 1
-            else:
-                Successcount += 1
+#             if not retvalue:
+#                 failcount += 1
+#             else:
+#                 Successcount += 1
 
-print(f"Total :{Successcount + failcount} Success : {Successcount} , Fail : {failcount}")
+# print(f"Total :{Successcount + failcount} Success : {Successcount} , Fail : {failcount}")
