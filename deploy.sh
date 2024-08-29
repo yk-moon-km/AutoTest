@@ -19,7 +19,18 @@ then
 else
     echo "Homebrew가 이미 설치되어 있습니다."
 fi
-# 12. FFmpeg 설치 및 경로 설정
+
+# 2. Node.js 및 npm 설치 (필요 시)
+if ! command -v node &> /dev/null
+then
+    echo "Node.js가 설치되어 있지 않습니다. Node.js와 npm을 설치합니다."
+    brew install node
+else
+    echo "Node.js 및 npm이 이미 설치되어 있습니다."
+fi
+
+
+# 3. FFmpeg 설치 및 경로 설정
 if ! command -v ffmpeg &> /dev/null
 then
     echo "FFmpeg가 설치되어 있지 않습니다. FFmpeg를 설치합니다."
