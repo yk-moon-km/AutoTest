@@ -1,349 +1,3 @@
-<!--&lt;!&ndash;&lt;!&ndash;index.html&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
-<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
-<!--&lt;!&ndash;<head>&ndash;&gt;-->
-<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
-<!--&lt;!&ndash;    <meta name="viewport" content="width=device-width, initial-scale=1.0">&ndash;&gt;-->
-<!--&lt;!&ndash;    <title>Select Version</title>&ndash;&gt;-->
-<!--&lt;!&ndash;    <style>&ndash;&gt;-->
-<!--&lt;!&ndash;        body {&ndash;&gt;-->
-<!--&lt;!&ndash;            font-family: Arial, sans-serif;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin: 20px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        h1 {&ndash;&gt;-->
-<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
-<!--&lt;!&ndash;            color: #333;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        form {&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-bottom: 20px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        h2, h3 {&ndash;&gt;-->
-<!--&lt;!&ndash;            color: #666;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        .section {&ndash;&gt;-->
-<!--&lt;!&ndash;            border: 1px solid #ddd;&ndash;&gt;-->
-<!--&lt;!&ndash;            padding: 10px;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-bottom: 20px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        .form-group {&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-bottom: 15px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        label {&ndash;&gt;-->
-<!--&lt;!&ndash;            display: block;&ndash;&gt;-->
-<!--&lt;!&ndash;            font-weight: bold;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        input[type="file"],&ndash;&gt;-->
-<!--&lt;!&ndash;        textarea {&ndash;&gt;-->
-<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
-<!--&lt;!&ndash;            padding: 8px;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-top: 5px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        input[type="checkbox"],&ndash;&gt;-->
-<!--&lt;!&ndash;        input[type="radio"] {&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-right: 10px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        button {&ndash;&gt;-->
-<!--&lt;!&ndash;            background-color: #4CAF50;&ndash;&gt;-->
-<!--&lt;!&ndash;            color: white;&ndash;&gt;-->
-<!--&lt;!&ndash;            border: none;&ndash;&gt;-->
-<!--&lt;!&ndash;            padding: 10px 20px;&ndash;&gt;-->
-<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
-<!--&lt;!&ndash;            display: inline-block;&ndash;&gt;-->
-<!--&lt;!&ndash;            font-size: 16px;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-top: 10px;&ndash;&gt;-->
-<!--&lt;!&ndash;            cursor: pointer;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        button[type="button"] {&ndash;&gt;-->
-<!--&lt;!&ndash;            background-color: #008CBA;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        button:hover {&ndash;&gt;-->
-<!--&lt;!&ndash;            opacity: 0.8;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;        iframe {&ndash;&gt;-->
-<!--&lt;!&ndash;            border: 1px solid #ccc;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-top: 20px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;    </style>&ndash;&gt;-->
-<!--&lt;!&ndash;    <script>&ndash;&gt;-->
-<!--&lt;!&ndash;        function selectAllCheckBoxes(name) {&ndash;&gt;-->
-<!--&lt;!&ndash;            const checkboxes = document.querySelectorAll(`input[name="${name}"]`);&ndash;&gt;-->
-<!--&lt;!&ndash;            checkboxes.forEach(checkbox => checkbox.checked = true);&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        function refreshIframe() {&ndash;&gt;-->
-<!--&lt;!&ndash;            const iframe = document.getElementById('taskStatusIframe');&ndash;&gt;-->
-<!--&lt;!&ndash;            iframe.src = iframe.src;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        window.onload = function() {&ndash;&gt;-->
-<!--&lt;!&ndash;            setInterval(refreshIframe, 10000); // 10초마다 갱신&ndash;&gt;-->
-<!--&lt;!&ndash;        };&ndash;&gt;-->
-<!--&lt;!&ndash;    </script>&ndash;&gt;-->
-<!--&lt;!&ndash;</head>&ndash;&gt;-->
-<!--&lt;!&ndash;<body>&ndash;&gt;-->
-<!--&lt;!&ndash;    <h1>Select 2 Files and Enter Details</h1>&ndash;&gt;-->
-<!--&lt;!&ndash;     &lt;!&ndash; Task Status Iframe &ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="section">&ndash;&gt;-->
-<!--&lt;!&ndash;        <h2>Task Status</h2>&ndash;&gt;-->
-<!--&lt;!&ndash;        <iframe id="taskStatusIframe" src="{{ url_for('task_status') }}" width="100%" height="400px"></iframe>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-
-
-<!--&lt;!&ndash;    &lt;!&ndash; Details Form &ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="section">&ndash;&gt;-->
-<!--&lt;!&ndash;        <form method="post" action="{{ url_for('upload_files') }}">&ndash;&gt;-->
-<!--&lt;!&ndash;            <h2>Select Files</h2>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                {% for file in files %}&ndash;&gt;-->
-<!--&lt;!&ndash;                    <label>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <input type="checkbox" name="files" value="{{ file }}"> {{ file }}&ndash;&gt;-->
-<!--&lt;!&ndash;                    </label><br>&ndash;&gt;-->
-<!--&lt;!&ndash;                {% endfor %}&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;            <h2>Select Device(s)</h2>&ndash;&gt;-->
-<!--&lt;!&ndash;            <button type="button" onclick="selectAllCheckBoxes('devices')">Select All</button><br>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                {% for device in devices %}&ndash;&gt;-->
-<!--&lt;!&ndash;                    <label>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <input type="checkbox" name="devices" value="{{ device }}"> {{ device }}&ndash;&gt;-->
-<!--&lt;!&ndash;                    </label><br>&ndash;&gt;-->
-<!--&lt;!&ndash;                {% endfor %}&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;            <h2>Select Action</h2>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <input type="radio" name="action" value="versioncompare"> Version Compare&ndash;&gt;-->
-<!--&lt;!&ndash;                </label><br>&ndash;&gt;-->
-<!--&lt;!&ndash;                <label>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <input type="radio" name="action" value="regression"> Regression&ndash;&gt;-->
-<!--&lt;!&ndash;                </label><br>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;            <h2>Select Range</h2>&ndash;&gt;-->
-<!--&lt;!&ndash;            <button type="button" onclick="selectAllCheckBoxes('range')">Select All</button><br>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                {% for subfolder in subfolders %}&ndash;&gt;-->
-<!--&lt;!&ndash;                    <label>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <input type="checkbox" name="range" value="{{ subfolder }}"> {{ subfolder }}&ndash;&gt;-->
-<!--&lt;!&ndash;                        <br> &lt;!&ndash; 파일명 및 파일 내용을 출력 &ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;                        {% for file in subfolder_files[subfolder] %}&ndash;&gt;-->
-<!--&lt;!&ndash;                            <strong>File:</strong> {{ file.name }}<br>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <strong>Content:</strong> <pre>{{ file.content }}</pre><br>&ndash;&gt;-->
-<!--&lt;!&ndash;                        {% endfor %}&ndash;&gt;-->
-<!--&lt;!&ndash;                    </label><br>&ndash;&gt;-->
-<!--&lt;!&ndash;                {% endfor %}&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;            <button type="submit">Submit</button>&ndash;&gt;-->
-<!--&lt;!&ndash;        </form>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;    &lt;!&ndash; File Upload Form &ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="section">&ndash;&gt;-->
-<!--&lt;!&ndash;        <h2>Select Version</h2>&ndash;&gt;-->
-<!--&lt;!&ndash;        <h3>Upload Apk</h3>&ndash;&gt;-->
-<!--&lt;!&ndash;        <form method="post" action="{{ url_for('upload_apk') }}" enctype="multipart/form-data">&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label for="file1">Version:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                <input type="file" id="file1" name="file1" required>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <button type="submit">Upload</button>&ndash;&gt;-->
-<!--&lt;!&ndash;        </form>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    &lt;!&ndash; TC Upload Form &ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="section">&ndash;&gt;-->
-<!--&lt;!&ndash;        <h3>Upload TC</h3>&ndash;&gt;-->
-<!--&lt;!&ndash;        <form method="post" action="{{ url_for('upload_TC') }}" enctype="multipart/form-data">&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label for="tcfile">TC File:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                <input type="file" id="tcfile" name="tcfile" required>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label for="tcdesc">Description:</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                <textarea id="tcdesc" name="tcdesc" required></textarea>&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <button type="submit">Upload</button>&ndash;&gt;-->
-<!--&lt;!&ndash;        </form>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;</body>&ndash;&gt;-->
-<!--&lt;!&ndash;</html>&ndash;&gt;-->
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Select Version</title>-->
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            margin: 20px;-->
-<!--        }-->
-<!--        h1 {-->
-<!--            text-align: center;-->
-<!--            color: #333;-->
-<!--        }-->
-<!--        form {-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-<!--        h2, h3 {-->
-<!--            color: #666;-->
-<!--        }-->
-<!--        .section {-->
-<!--            border: 1px solid #ddd;-->
-<!--            padding: 10px;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-<!--        .form-group {-->
-<!--            margin-bottom: 15px;-->
-<!--        }-->
-<!--        label {-->
-<!--            display: block;-->
-<!--            font-weight: bold;-->
-<!--        }-->
-<!--        input[type="file"],-->
-<!--        textarea {-->
-<!--            width: 100%;-->
-<!--            padding: 8px;-->
-<!--            margin-top: 5px;-->
-<!--        }-->
-<!--        input[type="checkbox"],-->
-<!--        input[type="radio"] {-->
-<!--            margin-right: 10px;-->
-<!--        }-->
-<!--        button {-->
-<!--            background-color: #4CAF50;-->
-<!--            color: white;-->
-<!--            border: none;-->
-<!--            padding: 10px 20px;-->
-<!--            text-align: center;-->
-<!--            display: inline-block;-->
-<!--            font-size: 16px;-->
-<!--            margin-top: 10px;-->
-<!--            cursor: pointer;-->
-<!--        }-->
-<!--        button[type="button"] {-->
-<!--            background-color: #008CBA;-->
-<!--        }-->
-<!--        button:hover {-->
-<!--            opacity: 0.8;-->
-<!--        }-->
-<!--        iframe {-->
-<!--            border: 1px solid #ccc;-->
-<!--            margin-top: 20px;-->
-<!--        }-->
-<!--    </style>-->
-<!--    <script>-->
-<!--        function selectAllCheckBoxes(name) {-->
-<!--            const checkboxes = document.querySelectorAll(`input[name="${name}"]`);-->
-<!--            checkboxes.forEach(checkbox => checkbox.checked = true);-->
-<!--        }-->
-
-<!--        function refreshIframe() {-->
-<!--            const iframe = document.getElementById('taskStatusIframe');-->
-<!--            iframe.src = iframe.src;-->
-<!--        }-->
-
-<!--        window.onload = function() {-->
-<!--            setInterval(refreshIframe, 10000); // 10초마다 갱신-->
-<!--        };-->
-<!--    </script>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <h1>Android Auto Test</h1>-->
-<!--     &lt;!&ndash; Task Status Iframe &ndash;&gt;-->
-<!--    <div class="section">-->
-<!--        <iframe id="taskStatusIframe" src="{{ url_for('task_status') }}" width="100%" height="400px"></iframe>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Details Form &ndash;&gt;-->
-<!--    <div class="section">-->
-<!--        <form method="post" action="{{ url_for('upload_files') }}">-->
-<!--            <h2>Select TC</h2>-->
-<!--            <div class="form-group">-->
-<!--                <label>-->
-<!--                    <input type="radio" name="action" value="versioncompare"> Version Compare (2개의 apk를 선택해주세요)-->
-<!--                </label><br>-->
-<!--&lt;!&ndash;                <label>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <input type="radio" name="action" value="regression"> Result Compare(1개의 apk를 선택해주세요)&ndash;&gt;-->
-<!--&lt;!&ndash;                </label><br>&ndash;&gt;-->
-<!--            </div>-->
-<!--             <div class="form-group">-->
-<!--                <label for="account">Account(KM 구독 상태의 구글 계정)광고 노출시 정상동작 불가</label>-->
-<!--                <textarea id="account" name="account" required>yk.moon@kinemaster.com</textarea>-->
-<!--            </div>-->
-<!--            <h2>Select Version</h2>-->
-<!--            <div class="form-group">-->
-<!--                {% for file in apk_files %}-->
-<!--                    <label>-->
-<!--                        <input type="checkbox" name="files" value="{{ file }}"> {{ file }}-->
-<!--                    </label><br>-->
-<!--                {% endfor %}-->
-<!--            </div>-->
-
-<!--            <h2>Select Device(s)</h2>-->
-<!--            <button type="button" onclick="selectAllCheckBoxes('devices')">Select All</button><br>-->
-<!--            <div class="form-group">-->
-<!--                {% for device in devices %}-->
-<!--                    <label>-->
-<!--                        <input type="checkbox" name="devices" value="{{ device }}"> {{ device }}-->
-<!--                    </label><br>-->
-<!--                {% endfor %}-->
-<!--            </div>-->
-<!--            </div>-->
-<!--            <h2>Select Sub TC</h2>-->
-<!--            <button type="button" onclick="selectAllCheckBoxes('range')">Select All</button><br>-->
-<!--            <div class="form-group">-->
-<!--                {% for subfolder in subfolders %}-->
-<!--                    <label>-->
-<!--                        <input type="checkbox" name="range" value="{{ subfolder }}"> {{ subfolder }}-->
-<!--                        <br> &lt;!&ndash; 파일 내용을 출력 &ndash;&gt;-->
-<!--                        {% for file in subfolder_files[subfolder] %}<pre>{{ file.content }}</pre>-->
-<!--                        {% endfor %}-->
-<!--                    </label><br>-->
-<!--                {% endfor %}-->
-<!--            </div>-->
-
-<!--            <button type="submit">Submit</button>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--    &lt;!&ndash; File Upload Form &ndash;&gt;-->
-<!--    <div class="section">-->
-<!--        <h2>Select Version</h2>-->
-<!--        <h3>Upload Apk</h3>-->
-<!--        <form method="post" action="{{ url_for('upload_apk') }}" enctype="multipart/form-data">-->
-<!--            <div class="form-group">-->
-<!--                <label for="file1">Version:</label>-->
-<!--                <input type="file" id="file1" name="file1" required>-->
-<!--            </div>-->
-<!--            <button type="submit">Upload</button>-->
-<!--        </form>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; TC Upload Form &ndash;&gt;-->
-<!--    <div class="section">-->
-<!--        <h3>Upload TC</h3>-->
-<!--        <form method="post" action="{{ url_for('upload_TC') }}" enctype="multipart/form-data">-->
-<!--            <div class="form-group">-->
-<!--                <label for="tcfile">Sub TC File: 테스트할 kine파일</label>-->
-<!--                <input type="file" id="tcfile" name="tcfile" required>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="tcresultfile">TC Result File: 결과 비교용 mp4파일 (version compare의 경우 필요 없음)</label>-->
-<!--                <input type="file" id="tcresultfile" name="tcresultfile" required>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label for="tcdesc">Description:</label>-->
-<!--                <textarea id="tcdesc" name="tcdesc" required></textarea>-->
-<!--            </div>-->
-<!--            <button type="submit">Upload</button>-->
-<!--        </form>-->
-<!--    </div>-->
-
-<!--</body>-->
-<!--</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -425,10 +79,13 @@
         }
     </style>
     <script>
-        function selectAllCheckBoxes(name) {
-            const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
-            checkboxes.forEach(checkbox => checkbox.checked = true);
-        }
+    function selectAllCheckBoxes(name) {
+        const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true; // 체크박스를 모두 선택 상태로 변경
+        });
+    }
+
 
         function refreshIframe() {
             const iframe = document.getElementById('taskStatusIframe');
@@ -438,6 +95,37 @@
         window.onload = function() {
             setInterval(refreshIframe, 10000); // 10초마다 갱신
         };
+        function handleSubmit(event) {
+        event.preventDefault(); // 기본 동작 막기
+        event.target.submit();  // 폼 제출
+        window.location.reload();  // 페이지 새로 고침
+    }
+        <script>
+    function toggleInput() {
+        var kineForm = document.getElementById('kine_form');
+        var mixForm = document.getElementById('mix_form');
+        var kineRadio = document.getElementById('kine');
+        var mixRadio = document.getElementById('mix');
+
+        if (kineRadio.checked) {
+            kineForm.style.display = 'block';
+            mixForm.style.display = 'none';
+            document.getElementById('tckinefile').required = true;
+            document.getElementById('tcresultfile').required = true;
+            document.getElementById('mixurl').required = false;
+        } else if (mixRadio.checked) {
+            kineForm.style.display = 'none';
+            mixForm.style.display = 'block';
+            document.getElementById('tckinefile').required = false;
+            document.getElementById('tcresultfile').required = false;
+            document.getElementById('mixurl').required = true;
+        }
+    }
+
+    // 초기화 시, Kine가 선택된 상태에서 필드가 보이도록 설정
+    toggleInput();
+</script>
+
     </script>
 </head>
 <body>
@@ -449,7 +137,7 @@
 
     <!-- Details Form -->
     <div class="section">
-        <form method="post" action="{{ url_for('upload_files') }}">
+            <form method="post" action="{{ url_for('upload_files') }}" onsubmit="handleSubmit(event)">
             <div class="form-group">
                 <label>
                     <input type="radio" name="action" value="versioncompare"> Version Compare (2개의 apk를 선택해주세요)
@@ -472,7 +160,7 @@
             </div>
 
             <h2>Select Device(s)</h2>
-            <button type="button" onclick="selectAllCheckBoxes('devices')">Select All</button><br>
+            <button type="button" onclick="selectAllCheckBoxes('devices')">Select All Devices</button>
             <div class="form-group grid-container">
                 {% for device in devices %}
                     <label>
@@ -482,19 +170,30 @@
             </div>
 
             <h2>Select Range</h2>
-            <button type="button" onclick="selectAllCheckBoxes('range')">Select All</button><br>
-            <div class="form-group grid-container">
-                {% for subfolder in subfolders %}
-                    <label>
-                        <input type="checkbox" name="range" value="{{ subfolder }}"> {{ subfolder }}
-                        <br> <!-- 파일 내용 출력 -->
-                        {% for file in subfolder_files[subfolder] %}
-                            <pre>{{ file.content }}</pre>
-                        {% endfor %}
-                    </label>
-                {% endfor %}
-            </div>
+            <button type="button" onclick="selectAllCheckBoxes('range')">Select All TC</button>
 
+
+                <div class="form-group grid-container">
+                    <table border="1" cellpadding="5">
+                        <tr>
+                            <th>Select</th>
+                            <th>Type</th>
+                            <th>Test Case</th>
+                            <th>Description</th>
+                        </tr>
+                        {% for test_case in test_cases %}
+                        <tr>
+                            <!-- 체크박스 추가 -->
+                            <td>
+                                <input type="checkbox" name="range" value="{{ test_case['Type'] }},{{ test_case['TestCase'] }}">
+                            </td>
+                            <td>{{ test_case['Type'] }}</td>
+                            <td>{{ test_case['TestCase'] }}</td>
+                            <td>{{ test_case['Desc'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             <button type="submit">Submit</button>
         </form>
     </div>
@@ -502,20 +201,41 @@
         <h3>Upload TC</h3>
         <form method="post" action="{{ url_for('upload_TC') }}" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="tcfile">Sub TC File: 테스트할 kine파일</label>
-                <input type="file" id="tcfile" name="tcfile" required>
+                <label>Test Type:</label><br>
+                <input type="radio" id="kine" name="test_type" value="kine" onclick="toggleInput()" checked>
+                <label for="kine">Kine</label>
+                <input type="radio" id="mix" name="test_type" value="mix" onclick="toggleInput()">
+                <label for="mix">Mix</label>
             </div>
+
+            <!-- Kine 관련 입력 폼 -->
+            <div id="kine_form">
+                <div class="form-group">
+                    <label for="tckinefile">Sub TC File: 테스트할 kine파일</label>
+                    <input type="file" id="tckinefile" name="tckinefile" required>
+                </div>
+
+            </div>
+
+            <!-- Mix 관련 입력 폼 (초기 상태에서 숨김) -->
+            <div id="mix_form" style="display: none;">
+                <div class="form-group">
+                    <label for="mixurl">Mix URL: 믹스 URL 입력</label>
+                    <input type="url" id="mixurl" name="mixurl" required>
+                </div>
+            </div>
+
             <div class="form-group">
+
                 <label for="tcresultfile">TC Result File: 결과 비교용 mp4파일 (version compare의 경우 필요 없음)</label>
                 <input type="file" id="tcresultfile" name="tcresultfile" required>
-            </div>
-            <div class="form-group">
+
                 <label for="tcdesc">Description:</label>
                 <textarea id="tcdesc" name="tcdesc" required></textarea>
             </div>
+
             <button type="submit">Upload</button>
         </form>
-    </div>
         <div class="section">
         <h2>Select Version</h2>
         <h3>Upload Apk</h3>

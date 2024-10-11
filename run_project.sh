@@ -37,7 +37,7 @@ fi
 echo "Celery 워커를 새 터미널 창에서 실행합니다."
 osascript <<EOF
 tell application "Terminal"
-    do script "source $VENV_DIR/bin/activate && celery -A celery_app worker --loglevel=info"
+    do script "cd $PROJECT_DIR && source $VENV_DIR/bin/activate && celery -A autotest_server.celery worker --loglevel=info"
 end tell
 EOF
 

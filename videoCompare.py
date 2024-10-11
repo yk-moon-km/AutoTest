@@ -31,6 +31,7 @@ class videoComapre:
          
         output_folder = os.path.dirname(inputfile)+'/' +os.path.splitext(os.path.basename(inputfile))[0]
         # output_folder삭제후 새로 생성
+        print(f"extract_frames {output_folder}")
         if os.path.exists(output_folder):
             shutil.rmtree(output_folder)
         
@@ -42,6 +43,7 @@ class videoComapre:
             time.sleep(2)
 
     def compare_frames(self):
+        print(f"{self.inputVideo1} / {self.inputVideo2}")
         self.extract_frames(self.inputVideo1)
         self.extract_frames(self.inputVideo2)
         frames_dir1 = os.path.dirname(self.inputVideo1)+ '/'+os.path.splitext(os.path.basename(self.inputVideo1))[0]
