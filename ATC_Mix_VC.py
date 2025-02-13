@@ -22,16 +22,17 @@ class AtcMixVc(AtcMix):
 
             files = []
             return_val = True
-            for versionfileName in versionfileNames:
-                files = self.file_download(versionfileName,  self.subTC.split("/")[-1], Path(self.version[i]).name)
+            for i, versionfileName in enumerate(versionfileNames): 
+                files.append(self.file_download(versionfileName,  self.subTC.split("/")[-1], Path(self.version[i]).name))
             for i in range(len(files) - 1):  # 마지막 요소는 비교할 것이 없음
                 str1 = files[i]
                 str2 = files[i + 1]
-                if self.compare_files(files[i],files[i+1], self.subTC.split("/")[-1])==False:
+                retvalue = self.compare_files(files[i],files[i+1], self.subTC.split("/")[-1])
+                if retvalue==False:
                     return_val =False 
                 os.remove(files[i])
-            os.remove(files[len(files)])
-            return return_val
+            os.remove(files[len(files)-1])
+
         
         except Exception as e:
             print(f"예외 발생: {e}")
