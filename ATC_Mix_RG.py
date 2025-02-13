@@ -18,16 +18,13 @@ class AtcMixRg( AtcMix):
         try:
             tc_url = 'https://kine.to/template/66cbb3d7c9ed66472fc2903d'
             version1fileName = self.rg_tc_mix(self.driver )
-            #self.driver.quit()
 
             file1 = self.file_download(version1fileName, self.subTC.split("/")[-1], Path(self.version1).name)
             file2 = f'{self.current_folder}/Test/{self.subTC.split("/")[-1]}.mp4'
             return_val =  self.compare_files(file1, file2, self.subTC.split("/")[-1])
-            # file1 ,2 delete
-            # os.remove(file1)
-            # os.remove(file2)
             return return_val
-        except:
+        except Exception as e:
+            print(f"예외 발생: {e}")
             self.take_screenshot(f'/sdcard/DCIM/f{self.subTC.split("/")[-1]}.png', f'fail_{self.tc}_{self.subTC.split("/")[-1]}_{self.capabilities.get("udid")}.jpg')
             print("Version compare test failed")
             #self.driver.quit()

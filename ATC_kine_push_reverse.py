@@ -8,9 +8,6 @@ class AtcKinePushReverse(AndroidTC):
         print("Init AtcKinePush")
         super().__init__( tc, device,account ,version,folder,subTC,result_path)
 
-        # self.capabilities = super().capabilities
-
-
 
     def install_tc(self, version, filename, localpath, remotepath,driver,folder):
         self.driver = driver
@@ -27,8 +24,6 @@ class AtcKinePushReverse(AndroidTC):
         except WebDriverException as e:
             print(f"앱을 활성화하는 데 실패했습니다: {e}")
             return "fail"
-        # self.run_adb_command(
-        #     f'adb -s {self.capabilities.get("udid")} shell am start -a android.intent.action.VIEW"')
 
         self.app_install_login(self.account,driver)
         self._create_new_project(driver)
@@ -55,13 +50,6 @@ class AtcKinePushReverse(AndroidTC):
             el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
             if el:
                 el.click()
-
-        # el = self.find_button(driver,'ID',
-        #                      "com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again")
-        # el.click()
-        # el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
-        # el.click()
-        # # download 폴더 가기
 
 
         el = self.find_button(driver,'UI',"new UiSelector().description(\"Show roots\")")
@@ -123,19 +111,9 @@ class AtcKinePushReverse(AndroidTC):
 
         el = self.find_button(driver,'xpath', f'//android.widget.FrameLayout[@resource-id="com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export"]/android.widget.ImageView')
         el.click()
-        # el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(5)")
-        # if el:
-        #     el.click()
-        # else:
-        #     el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(6)")
-        #     el.click()
         el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
         el.click()
 
-        # el = self.find_button(driver, 'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again")
-        # el.click()
-        # el = self.find_button(driver, 'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
-        # el.click()
         el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again",5)
         if el:
             el.click()
@@ -153,17 +131,13 @@ class AtcKinePushReverse(AndroidTC):
             testvideofileName1 = self.install_tc(self.version, local_file, local_path, remote_path,self.driver,self.folder)
 
             self.delete_files_in_remote_folder(remote_path)
-            #self.driver.quit()
 
             file1 = self.file_download(testvideofileName1, self.subTC)
             filename_with_extension = os.path.basename(self.subTC)
 
-            # 2. 파일명에서 확장자를 제거
-            # filename = os.path.splitext(filename_with_extension)[0]
-            # file2 = f'{self.current_folder}/Test/{filename}.mp4'
             return self.compare_files(file1, file1, self.subTC)
-        except:
+        except Exception as e:
+            print(f"예외 발생: {e}")
             self.take_screenshot(f"/sdcard/DCIM/f{self.subTC}.png", f'fail_{self.tc}_{self.subTC}_{self.capabilities.get("udid")}.jpg')
             print("Regression test failed")
-            #self.driver.quit()
             return False

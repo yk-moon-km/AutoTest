@@ -86,10 +86,11 @@ def get_connected_devices():
 #         log_file.write(log_message + "\n")
 def log_result_csv(file_path, action, subtc_or_file, original_file_name=None, device=None,apkfile_path1=None, file_path2=None, status=None):
     # CSV 파일에 로그를 추가하는 함수
-    csv_headers = ['status', 'TC', 'SubTC/DownloadedFile', 'OriginalFileName', 'Device','Version1','Version2','Version3','Version4']
+    csv_headers = ['status', 'TC', 'SubTC/DownloadedFile', 'OriginalFileName', 'Device']
+    # ,'Version1','Version2','Version3','Version4']
     # for idx in enumerate(apkfile_path1, start=1):
     #     csv_headers += [f"Version{idx}"]
-    # csv_headers += [f"Version{i}" for i in range(1, apkfile_path1 + 1)]  # 🚀 동적으로 Version1, Version2, ... 추가
+    csv_headers += [f"Version{i}" for i in range(1, apkfile_path1 + 1)]  # 🚀 동적으로 Version1, Version2, ... 추가
     print(f'file_path{file_path}')
     print(f'1')
     log_data = {
@@ -669,7 +670,7 @@ def list_images_in_subfolder(subfolder):
     folder_path = os.path.join(RESULT_FOLDER, subfolder)
 
     # CSV 파일 읽기
-    log_file_path = os.path.join(folder_path, "result_log.csv")
+    log_file_path = os.path.join(folder_path, "result_log.txt")
     log_html = ""
     if os.path.exists(log_file_path):
         # ✅ subfolder 인자를 추가하여 호출

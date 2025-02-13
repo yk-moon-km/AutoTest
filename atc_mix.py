@@ -27,17 +27,6 @@ class AtcMix(AndroidTC):
         if el:
             el.click()
 
-        # el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
-        # el.click()
-        # # download 폴더 가기
-        # el = self.find_button(driver, "xpath",
-        #                           "//android.widget.FrameLayout[@resource-id=\"com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export\"]/android.widget.ImageView")
-        # el.click()
-
-        # # el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(5)")
-        # # el.click()
-        # el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
-        # el.click()
 
         el = self.find_button(driver,'xpath', '//android.widget.FrameLayout[@resource-id="com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export"]/android.widget.ImageView',30)
         if el:
@@ -46,13 +35,6 @@ class AtcMix(AndroidTC):
         else:
             el = self.find_button(driver,'xpath','//android.view.ViewGroup[@resource-id="com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export"]')
             el.click()
-        # el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(5)")
-        # if el:
-        #     el.click()
-        # else:
-        #     el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(6)")
-        #     el.click()
-        # el.click()
         print("!@#$%")
         el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
         if el:
@@ -71,16 +53,6 @@ class AtcMix(AndroidTC):
             if savecnt>1000:
                 break
 
-        # el = self.find_button(driver, 'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again")
-        # el.click()
-        # el = self.find_button(driver, 'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
-        # el.click()
-        # el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again",5)
-        # if el:
-        #     el.click()
-        #     el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right",1)
-        #     if el:
-        #         el.click()
 
     def install_tc_mix(self, version, tc_url,driver,folder):
 

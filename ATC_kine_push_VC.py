@@ -6,7 +6,6 @@ class AtcKinePushVc(AtcKinePush):
     def __init__(self, tc, device,account,version,folder,subTC,result_path):
         super().__init__( tc, device,account ,version,folder,subTC,result_path)
         print("Init AtcKinePushVc")
-        # self.capabilities = super().capabilities
     def __del__(self):
         print(f"AtcKinePushVc 객체가 소멸되었습니다.")
     def version_compare_tc(self, loacal_file, loacal_path, remote_path, subTC):
@@ -28,7 +27,6 @@ class AtcKinePushVc(AtcKinePush):
             versionfileNames = self.version_compare_tc( local_file, local_path, remote_path, self.subTC)
             print("version_compare_tc")
             self.delete_files_in_remote_folder(remote_path)
-            #self.driver.quit()
             print("delete_files_in_remote_folder")
             files = []
             return_val = True
@@ -41,12 +39,10 @@ class AtcKinePushVc(AtcKinePush):
                 if retvalue==False:
                     return_val =False 
                 os.remove(files[i])
-        #     shutil.rmtree(frames_dir2)
             os.remove(files[len(files)-1])
             return return_val
         except Exception as e:
             print(f"예외 발생: {e}")
             self.take_screenshot(f"/sdcard/DCIM/f{self.subTC}.png", f'fail_{self.tc}_{self.subTC}_{self.capabilities.get("udid")}.jpg')
             print("Version compare test failed")
-            #self.driver.quit()
             return False

@@ -27,8 +27,6 @@ class AtcKinePush(AndroidTC):
         except WebDriverException as e:
             print(f"앱을 활성화하는 데 실패했습니다: {e}")
             return "fail"
-        # self.run_adb_command(
-        #     f'adb -s {self.capabilities.get("udid")} shell am start -a android.intent.action.VIEW"')
 
         self.app_install_login(self.account,driver)
         self._create_new_project(driver)
@@ -56,12 +54,6 @@ class AtcKinePush(AndroidTC):
             if el:
                 el.click()
 
-        # el = self.find_button(driver,'ID',
-        #                      "com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again")
-        # el.click()
-        # el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
-        # el.click()
-        # download 폴더 가기
 
         print("_create_new_project AtcKinePush1")
         el = self.find_button(driver,'UI',"new UiSelector().description(\"Show roots\")")
@@ -90,33 +82,18 @@ class AtcKinePush(AndroidTC):
         el = self.find_button(driver,'xpath', tc_string)
         if el:
             el.click()
-        print("0!@#$%")
-        el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_allow_button",5)
-        print("01!@#$%")
-        if el:
-            print("001!@#$%")
-            el.click()
-        print("02!@#$%")
         el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_allow_button",5)
         if el:
-            print("0!@#$%")
             el.click()
-        print("1!@#$%")
+        el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_allow_button",5)
+        if el:
+            el.click()
         el = self.find_button(driver,'xpath', '//android.widget.FrameLayout[@resource-id="com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export"]/android.widget.ImageView',30)
         if el:
-            print("01111!@#$%")
             el.click()
         else:
             el = self.find_button(driver,'xpath','//android.view.ViewGroup[@resource-id="com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export"]')
             el.click()
-        # el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(5)")
-        # if el:
-        #     el.click()
-        # else:
-        #     el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(6)")
-        #     el.click()
-        # el.click()
-        print("!@#$%")
         el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
         if el:
             el.click()
@@ -131,13 +108,8 @@ class AtcKinePush(AndroidTC):
             el = self.find_button(driver,'xpath', '//android.widget.TextView[@resource-id="com.nexstreaming.app.kinemasterfree:id/save_as_process_fragment_message"]',3)
             savecnt=savecnt+1
             time.sleep(1)
-            if savecnt>1000:
+            if savecnt>3000:
                 break
-
-        # el = self.find_button(driver, 'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again")
-        # el.click()
-        # el = self.find_button(driver, 'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
-        # el.click()
         el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again",5)
         if el:
             el.click()

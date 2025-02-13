@@ -21,23 +21,6 @@ class AndroidTC:
         self.test_seting(tc, device,account, version, folder,subTC,result_path)
         self.current_folder = os.path.dirname(__file__)
 
-        # self.capabilities = {
-        #     "platformName": "Android",
-        #     "automationName": "uiautomator2",
-        #     "deviceName": "udid",
-        #     "udid": device
-        # }
-        # self.tc = tc
-        # self.version1 = version1
-        # self.version2 = version2
-        # current_time = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-        # self.current_folder = os.path.dirname(__file__)
-        # self.result_folder = f"{tc}_{current_time}"
-        # self.result_path = f"{self.current_folder}/Result/{self.result_folder}/"
-        # self.account = account
-        # if not os.path.exists(self.result_path):
-        #     os.mkdir(self.result_path)
-
     def __del__(self):
         print(f'{self.tc} 객체가 소멸되었습니다.')
         if self.driver :
@@ -83,7 +66,7 @@ class AndroidTC:
             shutil.move(audio2, f'{self.result_path}fail_{self.tc}_TC{subTC}_{self.capabilities.get("udid")}-2.wav')
             retvalue= False
         else: 
-            shutil.move(audio1, f'{self.result_path}fail_{self.tc}_TC{subTC}_{self.capabilities.get("udid")}.wav')
+            shutil.move(audio1, f'{self.result_path}Success_{self.tc}_TC{subTC}_{self.capabilities.get("udid")}.wav')
             os.remove(audio2)
         return retvalue
 
@@ -215,9 +198,7 @@ class AndroidTC:
         try:
             subprocess.run(['adb', '-s', self.capabilities.get('udid'), 'pull', remote_path, local_path],
                            check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            # subprocess.run(['adb', '-s', self.capabilities.get('udid'), 'rm', remote_path],
-            #                check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            
+
             return local_path
         except subprocess.CalledProcessError as e:
             print(f"File download failed: {e.stderr.decode('utf-8')}")

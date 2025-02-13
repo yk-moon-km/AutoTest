@@ -8,10 +8,6 @@ class AtcScript(AndroidTC):
         print("Init AtcKinePush")
         super().__init__( tc, device,account ,version,folder,subTC,result_path)
 
-        # self.capabilities = super().capabilities
-
-
-
     def install_script(self, version, filename, localpath, remotepath,driver,folder):
         self.driver = driver
         self.apk_install(version,folder)
@@ -27,8 +23,6 @@ class AtcScript(AndroidTC):
         except WebDriverException as e:
             print(f"앱을 활성화하는 데 실패했습니다: {e}")
             return "fail"
-        # self.run_adb_command(
-        #     f'adb -s {self.capabilities.get("udid")} shell am start -a android.intent.action.VIEW"')
 
         self.app_install_login(self.account,driver)
         self._create_new_project(driver)
@@ -63,12 +57,6 @@ class AtcScript(AndroidTC):
             el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
             if el:
                 el.click()
-        # el = self.find_button(driver,'ID',
-        #                      "com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again")
-        # el.click()
-        # el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
-        # el.click()
-        # download 폴더 가기
 
 
         el = self.find_button(driver,'UI',"new UiSelector().description(\"Show roots\")")

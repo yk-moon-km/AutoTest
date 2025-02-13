@@ -6,18 +6,13 @@ class AtcMixVc(AtcMix):
     def __init__(self, tc, device,account,version,folder,subTC,result_path):
         print("Init AtcMixVc")
         super().__init__( tc, device,account ,version,folder,subTC,result_path)
-        # self.capabilities = super().capabilities
-
+        
     def version_compare_tc_mix(self,driver):
         files = []
         for version in self.version:
             files.append(self.install_tc_mix(version,self.subTC,driver,self.folder))
         return files
     
-        # file1 = self.install_tc_mix(self.version1, self.subTC,driver)
-        # file2 = self.install_tc_mix(self.version2, self.subTC,driver)
-        # return file1, file2
-
 
     def run(self):
         self.driver = self._initialize_appium()
@@ -38,15 +33,8 @@ class AtcMixVc(AtcMix):
             os.remove(files[len(files)])
             return return_val
         
-            file1 = self.file_download(version1fileName, self.subTC.split("/")[-1], Path(self.version1).name)
-            file2 = self.file_download(version2fileName, self.subTC.split("/")[-1], Path(self.version2).name)
-            return_val =  self.compare_files(file1, file2, self.subTC.split("/")[-1])
-            # file1 ,2 delete
-            # os.remove(file1)
-            # os.remove(file2)
-            return return_val
-        except:
+        except Exception as e:
+            print(f"예외 발생: {e}")
             self.take_screenshot(f'/sdcard/DCIM/f{self.subTC.split("/")[-1]}.png', f'fail_{self.tc}_{self.subTC.split("/")[-1]}_{self.capabilities.get("udid")}.jpg')
             print("Version compare test failed")
-            #self.driver.quit()
             return False

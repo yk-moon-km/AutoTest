@@ -44,7 +44,7 @@ mix,https://kine.to/template/677d1fe1e9c154af117157a0,677d1fe1e9c154af117157a0.m
 10. Test status 완료된 테스트에 대해서 결과 확인 ./result폴더 안에 이미지로 확인 가능
 
 
-# todo
+
 1. jira 관련 기능
     2.1 jra result compare 기능 추가
 
