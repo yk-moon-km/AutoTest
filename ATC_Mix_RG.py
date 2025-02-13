@@ -2,9 +2,9 @@ from atc_mix import AtcMix
 from pathlib import Path
 
 class AtcMixRg( AtcMix):
-    def __init__(self, tc, device,account,version1,version2,subTC,result_path):
+    def __init__(self, tc, device,account,version,folder,subTC,result_path):
         print("Init AtcMixRg")
-        super().__init__( tc, device,account ,version1,version2,subTC,result_path)
+        super().__init__( tc, device,account ,version,folder,subTC,result_path)
         # self.capabilities = super().capabilities
 
     def rg_tc_mix(self,driver):

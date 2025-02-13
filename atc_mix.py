@@ -1,11 +1,11 @@
-from androidtc import AndroidTC
+from AndroidTC import AndroidTC
 import time
 from selenium.common.exceptions import WebDriverException
 
 class AtcMix(AndroidTC):
-    def __init__(self, tc, device,account,version1,version2,subTC,result_path):
+    def __init__(self, tc, device,account,version,folder,subTC,result_path):
         print("Init AtcMix")
-        super().__init__( tc, device,account ,version1,version2,subTC,result_path)
+        super().__init__( tc, device,account ,version,folder,subTC,result_path)
         # self.capabilities = super().capabilities
 
     def _create_mix_project(self,driver):
@@ -20,27 +20,72 @@ class AtcMix(AndroidTC):
         # el = self.find_button(driver,'ID',
         #                      "com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again")
         # el.click()
-        el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_allow_button")
-        el.click()
-        el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_allow_button")
-        el.click()
+        el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_allow_button",5)
+        if el:
+            el.click()
+        el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_allow_button",5)
+        if el:
+            el.click()
 
         # el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
         # el.click()
         # # download 폴더 가기
-        el = self.find_button(driver, "xpath",
-                                  "//android.widget.FrameLayout[@resource-id=\"com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export\"]/android.widget.ImageView")
-        el.click()
-
-        # el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(5)")
+        # el = self.find_button(driver, "xpath",
+        #                           "//android.widget.FrameLayout[@resource-id=\"com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export\"]/android.widget.ImageView")
         # el.click()
-        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
-        el.click()
 
-    def install_tc_mix(self, version, tc_url,driver):
+        # # el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(5)")
+        # # el.click()
+        # el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
+        # el.click()
+
+        el = self.find_button(driver,'xpath', '//android.widget.FrameLayout[@resource-id="com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export"]/android.widget.ImageView',30)
+        if el:
+            print("01111!@#$%")
+            el.click()
+        else:
+            el = self.find_button(driver,'xpath','//android.view.ViewGroup[@resource-id="com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export"]')
+            el.click()
+        # el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(5)")
+        # if el:
+        #     el.click()
+        # else:
+        #     el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(6)")
+        #     el.click()
+        # el.click()
+        print("!@#$%")
+        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
+        if el:
+            el.click()
+        else:
+            el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
+            if el:
+                el.click()
+
+        savecnt =0                               
+        el = self.find_button(driver,'xpath', '//android.widget.TextView[@resource-id="com.nexstreaming.app.kinemasterfree:id/save_as_process_fragment_message"]')
+        while el:
+            el = self.find_button(driver,'xpath', '//android.widget.TextView[@resource-id="com.nexstreaming.app.kinemasterfree:id/save_as_process_fragment_message"]',3)
+            savecnt=savecnt+1
+            time.sleep(1)
+            if savecnt>1000:
+                break
+
+        # el = self.find_button(driver, 'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again")
+        # el.click()
+        # el = self.find_button(driver, 'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
+        # el.click()
+        # el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again",5)
+        # if el:
+        #     el.click()
+        #     el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right",1)
+        #     if el:
+        #         el.click()
+
+    def install_tc_mix(self, version, tc_url,driver,folder):
 
         try:
-            self.apk_install(version)
+            self.apk_install(version,folder)
 
             try:
                 # 앱 활성화

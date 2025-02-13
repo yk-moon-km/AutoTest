@@ -1,10 +1,9 @@
-from atc_kine_push import AtcKinePush
+from ATC_kine_push import AtcKinePush
 import os
 
 class AtcKinePushRg(AtcKinePush):
-    def __init__(self, tc, device,account,version1,version2,subTC,result_path):
-        print("Init AtcKinePushRg")
-        super().__init__( tc, device,account ,version1,version2,subTC,result_path)
+    def __init__(self, tc, device,account,version,folder,subTC,result_path):
+        super().__init__( tc, device,account ,version,folder,subTC,result_path)
         # self.capabilities = super().capabilities
 
     def run(self):
@@ -13,7 +12,9 @@ class AtcKinePushRg(AtcKinePush):
             local_path = f'{self.current_folder}/Test/'
             local_file = f'{self.subTC}'
             remote_path = '/sdcard/Download/AutoTest/'
-            testvideofileName1 = self.install_tc(self.version1, local_file, local_path, remote_path,self.driver)
+            # file_path1 = os.path.join(self.folder, self.version[0])
+
+            testvideofileName1 = self.install_tc(self.version, local_file, local_path, remote_path,self.driver,self.folder)
 
             self.delete_files_in_remote_folder(remote_path)
             #self.driver.quit()

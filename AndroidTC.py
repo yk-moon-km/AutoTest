@@ -2,18 +2,23 @@ from appium import webdriver
 from videoCompare import videoComapre
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.webdriver import AppiumOptions
+from appium.webdriver.common.touch_action import TouchAction
+
+
+
 
 import time
 import subprocess
 import os
 import inspect
 from pathlib import Path
+import shutil
 
 
 class AndroidTC:
-    def __init__(self, tc, device,account,version1,version2,subTC,result_path):
+    def __init__(self, tc, device,account,version,folder,subTC,result_path):
         print("Init AndroidTC")
-        self.test_seting(tc, device,account, version1, version2,subTC,result_path)
+        self.test_seting(tc, device,account, version, folder,subTC,result_path)
         self.current_folder = os.path.dirname(__file__)
 
         # self.capabilities = {
@@ -37,11 +42,11 @@ class AndroidTC:
         print(f'{self.tc} 객체가 소멸되었습니다.')
         if self.driver :
             self.driver.quit()
-    def test_seting(self, tc,  device,account ,version1,version2,subTC,result_path):
+    def test_seting(self, tc,  device,account ,version,folder,subTC,result_path):
         self.tc = tc
         self.account = account
-        self.version1 = version1
-        self.version2 = version2
+        self.version = version
+        self.folder = folder
         self.capabilities = {
             "platformName": "Android",
             "automationName": "uiautomator2",
@@ -60,21 +65,31 @@ class AndroidTC:
         return self.driver
 
     def compare_files(self, file1, file2, subTC):
+        retvalue =True
         lc = videoComapre(file1, file2)
         max_val, img1, img2 = lc.compare_frames()
         threshold = 0.02 if self.tc != 'versioncompare' else 0
-
+        audio_val,audio1,audio2 = lc.compare_audio()
         if max_val.item() > threshold:
+            retvalue=False
             img1.save(f'{self.result_path}fail_{self.tc}_TC{subTC}_{self.capabilities.get("udid")}-1.jpg')
             img2.save(f'{self.result_path}fail_{self.tc}_TC{subTC}_{self.capabilities.get("udid")}-2.jpg')
-            return False
         else:
             img1.save(f'{self.result_path}Success_{self.tc}_TC{subTC}_{self.capabilities.get("udid")}.jpg')
-            return True
 
-    def find_button(self,driver, appium_type, locator):
+        
+        if audio_val<0.99 and audio_val!=0 :
+            shutil.move(audio1, f'{self.result_path}fail_{self.tc}_TC{subTC}_{self.capabilities.get("udid")}-1.wav')
+            shutil.move(audio2, f'{self.result_path}fail_{self.tc}_TC{subTC}_{self.capabilities.get("udid")}-2.wav')
+            retvalue= False
+        else: 
+            shutil.move(audio1, f'{self.result_path}fail_{self.tc}_TC{subTC}_{self.capabilities.get("udid")}.wav')
+            os.remove(audio2)
+        return retvalue
+
+    def find_button(self,driver, appium_type, locator,maxcount=10):
         count = 0
-        while count < 30:
+        while count < maxcount:
             try:
                 if appium_type == 'xpath':
                     return driver.find_element(by=AppiumBy.XPATH, value=locator)
@@ -97,18 +112,68 @@ class AndroidTC:
                     if el != None:
                         el.click()
                 except:
-                    time.sleep(1)
+                    time.sleep(0)
+                
+                try:
+
+                    el = driver.find_element(by=AppiumBy.ID,
+                                                  value="com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again")
+                    if el:
+                        el.click()
+                        el = driver.find_element(by=AppiumBy.ID,
+                                                  value="com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
+                        if el:
+                            el.click()
+                except:
+                    time.sleep(0)            
+                # save anyway 제거
+                try:
+                    el = driver.find_element(by=AppiumBy.ID,
+                                                  value="com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
+                                            
+                    # if el != None:
+                    #     if el.text=="Save Anyway" :
+                    if el:
+                        el.click()
+                except:
+                    time.sleep(0)
+                # 스프링 설치 가이드 삭제
+                try:
+                    el = driver.find_element(by=AppiumBy.ID,
+                                                  value="com.nexstreaming.app.kinemasterfree:id/installation_guidance_cancel_button")
+                                            
+                    # if el != None:
+                    #     if el.text=="Save Anyway" :
+                    if el:
+                        el.click()
+                except:
+                    time.sleep(0)
+                try:
+                    el = driver.find_element(by=AppiumBy.ID,
+                                                  value="com.nexstreaming.app.kinemasterfree:id/message_title")
+                                            
+                    if el != None:
+                        if el.text=="Free Video Editing App, Spring" :
+                            print(f"Spring error")
+                            # 특정 좌표 (x=16, y=125)에서 터치 액션 실행
+                            touch = driver.TouchAction()
+                            touch.tap(x=16, y=125).perform()
+                    
+                except:
+                    time.sleep(0)
+                    
                 count += 1
         print(f"Failed to find element: {locator}")
         return None
 
-    def apk_install(self, filename='7.4.12.33222.GP.apk'):
+    def apk_install(self, filename='7.4.12.33222.GP.apk',folder='uploads'):
+        apkfilename = os.path.join(folder, filename)
         local_path = f'{self.current_folder}/'
         package_name = 'com.nexstreaming.app.kinemasterfree'
 
         try:
             self.run_adb_command(f"adb -s {self.capabilities.get('udid')} uninstall {package_name}")
-            self.run_adb_command(f"adb -s {self.capabilities.get('udid')} install {local_path}{filename}")
+            self.run_adb_command(f"adb -s {self.capabilities.get('udid')} install {local_path}{apkfilename}")
         except subprocess.CalledProcessError as e:
             print(f"An error occurred: {e}")
 
@@ -117,7 +182,7 @@ class AndroidTC:
         if result.returncode == 0:
             return result.stdout.strip()
         else:
-            print(f"ADB Error: {result.stderr.strip()}")
+            print(f"ADB Error: {command}{result.stderr.strip()}")
             return None
 
     def take_screenshot(self, device_path='/sdcard/screenshot.png', local_path='screenshot.png'):
@@ -150,6 +215,9 @@ class AndroidTC:
         try:
             subprocess.run(['adb', '-s', self.capabilities.get('udid'), 'pull', remote_path, local_path],
                            check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            # subprocess.run(['adb', '-s', self.capabilities.get('udid'), 'rm', remote_path],
+            #                check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            
             return local_path
         except subprocess.CalledProcessError as e:
             print(f"File download failed: {e.stderr.decode('utf-8')}")
@@ -171,8 +239,9 @@ class AndroidTC:
 
     def app_install_login(self, account,driver):
         self.driver =driver
-        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
-        el.click()
+        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right",3)
+        if el:
+            el.click()
         el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_deny_button")
         el.click()
         el = self.find_button(driver,'UI',
@@ -186,7 +255,7 @@ class AndroidTC:
         el.click()
 
     def get_device_name_by_udid(self,udid):
-        result = subprocess.run(['adb', '-s', udid, 'shell', 'getprop', 'ro.product.model'], stdout=subprocess.PIPE,
+        result = subprocess.run(['adb', '-s', udid, 'shell', 'settings', 'get', 'global', 'device_name'], stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, text=True)
 
         if result.returncode == 0:

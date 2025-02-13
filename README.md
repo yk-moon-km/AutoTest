@@ -10,21 +10,41 @@ chomod +x *.sh
     1.1 appium(원격 디바이스 제어)
     1.2 celery(테스크 관리)
     1.3 flask(웹서버)
+2. jira 기능 사용할 경우 jiradown.py에 jira_token및 jira_user 저장
 
-# 테스트 방법
+# 사전 작업및 제약 사항
 1. Test를 하기위한 device연결
     1.1. 디바이스 언어 설정 영어
-    1.2. 최초디바이스 연결시 kinemaster 실행 -> Edit -> new project -> import -> file browser download폴더 선택 -> 그리드 보기 상태로 적용
-    1.3. 테스트 디바이스에 이미 설치된 kinemaster는 삭제 하고 테스트를위한 버전으로 새로 설치됨
-2. 브라우저에서 127.0.0.1:5000 접속
-3. 맨 아레에 있는 Upload Apk로 테스트가 필요한 apk를 업로드 
-4. upload TC를 통해서 테스트할 프로젝트 및 비교를 위한 결과 파일 업로드 
-5. Main TC를 선택 
-    5.1  Version Compare: 2개의 apk를 순차적으로 설치 후 경우 각각 저장한 비디오를 비교
-    5.2  Result Compare : TC 업로드시 업로드된 영상파일과 선택한 버전에서 저장한 비디오를 비교
-6. 테스트 진행할 디바이스 선택 
-7. subTC 선택
+    1.2. 테스트 디바이스에 이미 설치된 kinemaster는 삭제 하고 테스트를위한 버전으로 새로 설치됨
+    1.3. 하나의 작업이 진행중일 경우 다른 테스트는 진행 하지말것
+
+
+# TC 추가 방법
+1. 127.0.0.1에 Upload TC kine파일, 결과 파일, 테스트 설명 or 
+2. ./Test/TestCase.csv 만들기 
+sample
+Type,TestCase,Result,Desc
+kine,KM-12262.kine,20241231.mp4,테스트1
+mix,https://kine.to/template/677d1fe1e9c154af117157a0,677d1fe1e9c154af117157a0.mp4,믹스 테스트
+
+# apk 추가 방법
+1. 맨 아레에 있는 Upload Apk로 테스트가 필요한 apk를 업로드 or
+2. uploads 폴더 안에 apk 저장
+
+# 테스트 방법
+1. 테스트 방법을 선택 
+    1.1  Version Compare: 2개의 apk를 순차적으로 설치 후 경우 각각 저장한 비디오를 비교
+    1.2  Result Compare : TC 업로드시 업로드된 영상파일과 선택한 버전에서 저장한 비디오를 비교
+6. 테스트 진행할 디바이스 선택 (디바이스는 adb로 usb 디버그 연결되어 있는기기 표시됨)
+7. TC 선택
+    7.1 jira : 입력한 프로젝트에 jql을 기반으로 jira티켓에 포함되어 있는 kine파일로 테스트 진행
+    7.2 TC : TestCase.csv에 기술된 TC중 선택된 TC만 진행
 8. submit
 9. Test status에서 작업 리스트를 확인가능
-10. 하나의 작업이 진행중일 경우 다른 테스트는 진행 하지말것
-11. Test status 완료된 테스트에 대해서 결과 확인
+10. Test status 완료된 테스트에 대해서 결과 확인 ./result폴더 안에 이미지로 확인 가능
+
+
+# todo
+1. jira 관련 기능
+    2.1 jra result compare 기능 추가
+

@@ -80,3 +80,5 @@ Werkzeug==3.0.3
 wsproto==1.2.0
 xmltodict==0.13.0
 zipp==3.19.2
+pandas==2.0.3
+librosa==0.10.2.post1

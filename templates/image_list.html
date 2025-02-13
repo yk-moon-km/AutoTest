@@ -1,26 +1,4 @@
-<!--&lt;!&ndash;image_list.html&ndash;&gt;-->
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Images in {{ subfolder }}</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <h1>Test Result</h1>-->
-<!--    <a href="{{ url_for('task_status') }}">Go Back</a>-->
-<!--    <ul>-->
-<!--        {% for image in images %}-->
-<!--            <li>-->
-<!--                <img src="{{ url_for('result_file', filename=subfolder + '/' + image) }}" alt="{{ image }}" style="max-width: 20%; height: auto;">-->
-<!--                <p>{{ image }}</p>-->
-<!--            </li>-->
-<!--        {% endfor %}-->
-<!--    </ul>-->
-
-<!--</body>-->
-<!--</html>-->
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -38,6 +16,166 @@
             </li>
         {% endfor %}
     </ul>
+
+</body>
+</html> -->
+<!-- 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subfolder }} 폴더의 이미지</title>
+    <style>
+        /* 테이블 스타일 */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: left;
+        }
+        .styled-table th, .styled-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .styled-table th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ subfolder }} 폴더의 이미지</h1>
+    
+    {% if log_html %}
+        <h2>📄 결과 로그 (CSV 데이터)</h2>
+        {{ log_html | safe }}  
+    {% endif %}
+    
+    <h2>🖼 이미지 리스트</h2>
+    <ul>
+        {% for image in images %}
+            <li>
+                <img src="{{ url_for('result_file', filename=subfolder + '/' + image) }}" alt="{{ image }}" style="max-width: 20%; height: auto;">
+                <p>{{ image }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <a href="{{ url_for('list_images') }}">🔙 돌아가기</a>
+</body>
+</html>
+ -->
+
+ <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subfolder }} 폴더의 데이터</title>
+    <style>
+        /* 테이블 스타일 */
+            /* 기본 테이블 스타일 */
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+    .styled-table th, .styled-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+    .styled-table th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    
+    /* ✅ 강조된 행 (이미지가 2개 이상) */
+    .highlight {
+        background-color: #ffeb3b !important;  /* 노란색 강조 */
+        font-weight: bold;
+    }
+        /* Lightbox 스타일 */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+        .lightbox:target {
+            display: flex;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>{{ subfolder }} 폴더의 데이터</h1>
+    
+    {% if log_html %}
+        <h2>📄 결과 로그 (CSV 데이터 + 이미지)</h2>
+        {{ log_html | safe }}  <!-- CSV 테이블을 HTML로 렌더링 -->
+    {% endif %}
+
+    <!-- Lightbox 구조 -->
+    <div id="lightbox" class="lightbox">
+        <a href="#" class="close-btn">&times;</a>
+        <img id="lightbox-img" src="" alt="확대 이미지">
+    </div>
+
+    <a href="{{ url_for('list_images') }}">🔙 돌아가기</a>
+    
+
+    <script>
+        // 모든 이미지에 클릭 이벤트 추가
+        document.addEventListener("DOMContentLoaded", function() {
+            const images = document.querySelectorAll(".thumbnail");
+            const lightbox = document.getElementById("lightbox");
+            const lightboxImg = document.getElementById("lightbox-img");
+
+            images.forEach(img => {
+                img.addEventListener("click", function() {
+                    lightboxImg.src = this.src; // 클릭한 이미지 표시
+                    lightbox.style.display = "flex"; // Lightbox 보이기
+                });
+            });
+
+            // Lightbox 닫기 기능
+            lightbox.addEventListener("click", function(e) {
+                if (e.target !== lightboxImg) { // 클릭한 곳이 이미지가 아니면 닫기
+                    lightbox.style.display = "none";
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

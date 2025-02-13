@@ -1,13 +1,13 @@
 from  AndroidTC import AndroidTC
 import subprocess
 from selenium.common.exceptions import WebDriverException
-import time
+import os
 
-
-class AtcKinePush(AndroidTC):
+class AtcKinePushReverse(AndroidTC):
     def __init__(self, tc, device,account,version,folder,subTC,result_path):
         print("Init AtcKinePush")
         super().__init__( tc, device,account ,version,folder,subTC,result_path)
+
         # self.capabilities = super().capabilities
 
 
@@ -41,7 +41,6 @@ class AtcKinePush(AndroidTC):
 
     def _create_new_project(self,driver):
         self.driver = driver
-        print("_create_new_project AtcKinePush")
         el = self.find_button(driver,'UI', "new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/navigation_bar_item_icon_view\").instance(2)")
         el.click()
         el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/new_project_button_imageview")
@@ -49,6 +48,7 @@ class AtcKinePush(AndroidTC):
 
         el = self.find_button(driver,'UI', "new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/icon\").instance(1)")
         el.click()
+        
         el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again",5)
         if el:
             el.click()
@@ -61,9 +61,9 @@ class AtcKinePush(AndroidTC):
         # el.click()
         # el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
         # el.click()
-        # download 폴더 가기
+        # # download 폴더 가기
 
-        print("_create_new_project AtcKinePush1")
+
         el = self.find_button(driver,'UI',"new UiSelector().description(\"Show roots\")")
         if el:
             el.click()
@@ -85,54 +85,52 @@ class AtcKinePush(AndroidTC):
         el = self.find_button(driver,'UI',"new UiSelector().text(\"AutoTest\")")
         el.click()
 
-        print("_create_new_project AtcKinePush11")
+
         tc_string = f'//android.widget.TextView[@resource-id=\"android:id/title\" and @text=\"{self.subTC}\"]'
         el = self.find_button(driver,'xpath', tc_string)
         if el:
             el.click()
-        print("0!@#$%")
-        el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_allow_button",5)
-        print("01!@#$%")
-        if el:
-            print("001!@#$%")
-            el.click()
-        print("02!@#$%")
+
+        #권한 획득
         el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_allow_button",5)
         if el:
-            print("0!@#$%")
             el.click()
-        print("1!@#$%")
-        el = self.find_button(driver,'xpath', '//android.widget.FrameLayout[@resource-id="com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export"]/android.widget.ImageView',30)
+        el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_allow_button",5)
         if el:
-            print("01111!@#$%")
             el.click()
-        else:
-            el = self.find_button(driver,'xpath','//android.view.ViewGroup[@resource-id="com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export"]')
-            el.click()
+
+        #비디오  클립 선택
+        # 
+        #  
+        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/project_editor_timeline_view")
+        el.click()
+        el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/icon\").instance(0)")
+        el.click()
+        el = self.find_button(driver,'UI',"new UiSelector().text(\"Duplicate\")")
+        el.click()
+        el = self.find_button(driver,'UI',"new UiSelector().text(\"Reverse\")")
+        el.click()
+        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/project_editor_timeline_view")
+        el.click()
+        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/project_editor_timeline_view")
+        el.click()
+        el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/icon\").instance(3)")
+        el.click()
+
+
+        # 
+
+
+        el = self.find_button(driver,'xpath', f'//android.widget.FrameLayout[@resource-id="com.nexstreaming.app.kinemasterfree:id/option_panel_default_fragment_export"]/android.widget.ImageView')
+        el.click()
         # el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(5)")
         # if el:
         #     el.click()
         # else:
         #     el = self.find_button(driver,'UI', "new UiSelector().className(\"android.widget.ImageView\").instance(6)")
         #     el.click()
-        # el.click()
-        print("!@#$%")
         el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
-        if el:
-            el.click()
-        else:
-            el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/save_as_main_fragment_save")
-            if el:
-                el.click()
-
-        savecnt =0                               
-        el = self.find_button(driver,'xpath', '//android.widget.TextView[@resource-id="com.nexstreaming.app.kinemasterfree:id/save_as_process_fragment_message"]')
-        while el:
-            el = self.find_button(driver,'xpath', '//android.widget.TextView[@resource-id="com.nexstreaming.app.kinemasterfree:id/save_as_process_fragment_message"]',3)
-            savecnt=savecnt+1
-            time.sleep(1)
-            if savecnt>1000:
-                break
+        el.click()
 
         # el = self.find_button(driver, 'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again")
         # el.click()
@@ -141,7 +139,31 @@ class AtcKinePush(AndroidTC):
         el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/dialog_does_not_show_again_view_does_not_show_again",5)
         if el:
             el.click()
-            el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right",1)
+            el = self.find_button(driver,'ID',"com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right")
             if el:
                 el.click()
 
+
+    def run(self):
+        self.driver = self._initialize_appium()
+        try:
+            local_path = f'{self.current_folder}/Test/'
+            local_file = f'{self.subTC}'
+            remote_path = '/sdcard/Download/AutoTest/'
+            testvideofileName1 = self.install_tc(self.version, local_file, local_path, remote_path,self.driver,self.folder)
+
+            self.delete_files_in_remote_folder(remote_path)
+            #self.driver.quit()
+
+            file1 = self.file_download(testvideofileName1, self.subTC)
+            filename_with_extension = os.path.basename(self.subTC)
+
+            # 2. 파일명에서 확장자를 제거
+            # filename = os.path.splitext(filename_with_extension)[0]
+            # file2 = f'{self.current_folder}/Test/{filename}.mp4'
+            return self.compare_files(file1, file1, self.subTC)
+        except:
+            self.take_screenshot(f"/sdcard/DCIM/f{self.subTC}.png", f'fail_{self.tc}_{self.subTC}_{self.capabilities.get("udid")}.jpg')
+            print("Regression test failed")
+            #self.driver.quit()
+            return False
