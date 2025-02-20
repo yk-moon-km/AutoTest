@@ -114,7 +114,10 @@ def process_files_and_text(self, devices, account, action, tcs, file_path, range
     current_step = 0
     fail_cnt = 0
     success_cnt = 0
-    total_steps = len(tcs) * len(devices)
+    if range_type == 'server':
+        total_steps = tcs * len(devices)
+    else:
+        total_steps = len(tcs) * len(devices)
     print(f'version{file_path}')    
     test = AndroidTest(action, account=account,version=file_path, folder=folder_path)
     
@@ -123,6 +126,47 @@ def process_files_and_text(self, devices, account, action, tcs, file_path, range
     result_folder = f"./result/{test.result_folder}"  # test.result_folder를 기반으로
     os.makedirs(result_folder, exist_ok=True)
     log_file_path = os.path.join(result_folder, "result_log.txt")
+    
+    if range_type == 'server':
+         for count in range(tcs):
+            print(f"count {count} total{tcs}")
+            for device in devices:
+                test.set_device(device)
+                subtc = 'server,kr'
+                test.set_subTC(subtc)
+                current_step += 1
+                self.update_state(state='PROGRESS', meta={
+                    'current': current_step,
+                    'total': total_steps,
+                    'success_cnt': success_cnt,
+                    'fail_cnt': fail_cnt,
+                    'status': f'Processing step {current_step}'
+                })
+                retvalue = test.perform_actions(count)
+
+                log_result_csv(
+                file_path=log_file_path,
+                action=action,
+                subtc_or_file=test.test_type,
+                original_file_name=test.subTC,
+                device=device,
+                apkfile_path1=file_path,
+                status=retvalue
+                )
+                
+                # 카운트 업데이트
+                if retvalue:
+                    success_cnt += 1
+                else:
+                    fail_cnt += 1
+
+                self.update_state(state='PROGRESS', meta={
+                    'current': current_step,
+                    'total': total_steps,
+                    'success_cnt': success_cnt,
+                    'fail_cnt': fail_cnt,
+                    'status': f'Processing step {current_step}'
+                })
 
     if range_type == 'tc':
         for subtc in tcs:
@@ -320,6 +364,8 @@ def upload_files():
 
     if range_type=='jira':
         tcs = request.form.get('jira_project')
+    if action =='server':
+        tcs = request.form.get("server_count", type=int, default=1000)
 
     num_devices = len(devices)
     print(f"test1")
@@ -344,14 +390,14 @@ def upload_files():
             if len(selected_files) != 1 or num_devices == 0 or not action:
                 return f"Please select exactly 1 files, at least one device, and an action. len(selected_files)={len(selected_files)}, num_devices={num_devices}, TC={action}"
             file_path1 = os.path.join(FOLDER_PATH, selected_files[0])
-            
             task = process_files_and_text.apply_async(args=[devices, account, action, tcs, selected_files,range_type,FOLDER_PATH])
         elif range_type=='jira':
             if len(selected_files) != 1 or num_devices == 0 or not action:
                 return f"Please select exactly 1 files, at least one device, and an action. len(selected_files)={len(selected_files)}, num_devices={num_devices}, TC={action}"
             file_path1 = os.path.join(FOLDER_PATH, selected_files[0])
-           
             task = process_files_and_text.apply_async(args=[devices, account, action, tcs, selected_files,range_type,FOLDER_PATH])
+    elif action == "server":
+        task = process_files_and_text.apply_async(args=[devices, account,action, tcs,selected_files,action, FOLDER_PATH])
 
     # 작업 ID를 세션에 추가
     task_ids = session.get('task_ids', [])

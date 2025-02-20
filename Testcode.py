@@ -24,7 +24,7 @@ class MyTestCase(unittest.TestCase):
         #                 version2='7.4.17.33410.GP.apk'):
 
         # test = AndroidTest(action, account="yk.moon@kinemaster.com", version1=file_path1, version2=file_path2)
-        test = AndroidTest("regression", "device","yk.moon@kinemaster.com", version1, version2)
+        test = AndroidTest("reverse", "device","yk.moon@kinemaster.com", version1, version2)
         for tc in TCS:
             for count in subTC:
                 if onetineTest_cnt == 0 and tc == "downandup":
@@ -35,7 +35,7 @@ class MyTestCase(unittest.TestCase):
                 for device in devices:
                     logging.info(f"TC : {tc} , Device : {device} subtc : {count}")
                     allure.step(f"TC : {tc} , Device : {device} subtc : {count}")
-                    test.test_seting(tc,"yk.moon@kinemaster.com", device,version1,version2)
+                    test.test_seting(tc,"yk.moon@kinemaster.com", device,version1)
                     retvalue = test.perform_actions(count)
 
                     if not retvalue:

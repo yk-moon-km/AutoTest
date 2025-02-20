@@ -9,6 +9,7 @@ from ATC_Kine_push_RG import AtcKinePushRg
 from ATC_kine_push_reverse import AtcKinePushReverse
 from ATC_Mix_VC import AtcMixVc
 from ATC_Mix_RG import AtcMixRg
+from ATC_Server import ATC_Server
 
 from videoCompare import videoComapre
 
@@ -37,7 +38,7 @@ class AndroidTest:
         self.device = device
 
 
-    def perform_actions(self):
+    def perform_actions(self,count=False):
         print(f"perform_actions  {self.tc} {self.test_type} {self.device}, {self.account},{self.version},{self.folder},{self.subTC},{self.result_path}")
         if self.test_type == 'kine':
             if self.tc == 'versioncompare':
@@ -60,22 +61,32 @@ class AndroidTest:
                 return test.run()
             else:
                 return "error"
+        elif self.test_type == 'server':
+            if self.tc == 'server':
+                test= ATC_Server("server",self.device, self.account,self.version,self.folder,self.subTC,self.result_path,count)
+                return test.run()
         else:
             return "error"
 
 
-# # #
+# # # #
 
 
-# devices = ["9C241FFBA001L8"]#15151FDD4001GT"]# , "9C241FFBA001L8"]
+# devices = ["9C241FFBA001L8"]#15151FDD4001GT"]# , "1A051FDF600BG0"]
 # devices = ["15151FDD4001GT"]
+# devices = ["15151FDD4001GT"]#15151FDD4001GT"]# , "9C241FFBA001L8"]
 # platform = ["Android", "iOS"]
 # TCS = ["versioncompare"]
+# TCS = ["server"]
+
 # # subTC = ["Test1"]
 # # TCS = ["regression_kine"]
 # # subTC = ["Test1"]
 # # TCS = ["regression"]
+
 # subTC = ['kine,KM-11790.kine']
+# subTC = ['jira,key=']
+# subTC = ['server,kr']
 
 # # subTC = ['mix,https://kine.to/template/66e03a361098d00c48cf8933','kine,20240726.kine']
 # FOLDER_PATH = 'uploads'
@@ -86,7 +97,7 @@ class AndroidTest:
 # version2='uploads/7.5.16.34132.GP.apk'
 # # version=['7.5.1.33830.GP.apk','7.5.16.34132.GP.apk','7.4.17.33410.GP.apk']
 # # version=['7.5.16.34132.GP.apk','7.5.16.34132.GP1.apk']
-# version=['27.4.17.33410.GP.apk','7.4.17.33410.GP.apk']
+# version=['7.5.17.34152.GP.apk']#,'7.4.17.33410.GP.apk']
 #     # 'uploads/7.3.4.31612.GP.apk'
 # # __init__(self, tc, device='', account="yk.moon@kinemaster.com", version1='7.4.12.33222.GP.apk',
 # #          version2='7.4.17.33410.GP.apk'):
@@ -107,10 +118,11 @@ class AndroidTest:
 
 
 
-
+# count =0
 # for tc in TCS:
 #     test = AndroidTest(tc, account="yk.moon@kinemaster.com", version=version, folder=FOLDER_PATH)
 #     for count in subTC:
+    
 #         if onetineTest_cnt == 0 and tc == "downandup":
 #             onetineTest_cnt = 1
 #         elif onetineTest_cnt == 1 and tc == "downandup":
@@ -119,11 +131,17 @@ class AndroidTest:
 #         for device in devices:
 #             test.set_device( device)
 #             test.set_subTC(count)
-#             retvalue = test.perform_actions()
+#             for c in range(10):
+#                 try:
+#                     retvalue = test.perform_actions(c)
+#                     # retvalue = test.perform_actions()
+#                 except Exception as e:
+#                     print(f"예외 발생: {e}")
 
-#             if not retvalue:
-#                 failcount += 1
-#             else:
-#                 Successcount += 1
+#                 if not retvalue:
+#                     failcount += 1
+#                 else:
+#                     Successcount += 1
+                
 
 # print(f"Total :{Successcount + failcount} Success : {Successcount} , Fail : {failcount}")

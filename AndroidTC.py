@@ -179,7 +179,7 @@ class AndroidTC:
             print("Call stack:")
             for frame in stack:
                 print(f"Function {frame.function} in {frame.filename} at line {frame.lineno}")
-        return local_path
+        return f"{self.result_path}{local_path}"
 
     def delete_files_in_remote_folder(self, remote_folder):
         try:
