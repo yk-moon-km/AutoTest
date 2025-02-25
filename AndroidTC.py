@@ -4,9 +4,6 @@ from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.webdriver import AppiumOptions
 from appium.webdriver.common.touch_action import TouchAction
 
-
-
-import json
 import time
 import subprocess
 import os
@@ -20,11 +17,6 @@ class AndroidTC:
         print("Init AndroidTC")
         self.test_seting(tc, device,account, version, folder,subTC,result_path)
         self.current_folder = os.path.dirname(__file__)
-        with open("config.json", "r") as file:
-            config = json.load(file)
-    
-        self.mail_pw = config["mail_pw"]
-        self.mail_id = config["mail_id"]
         
     def __del__(self):
         print(f'{self.tc} 객체가 소멸되었습니다.')

@@ -5,6 +5,7 @@ from selenium.common.exceptions import WebDriverException
 from datetime import datetime
 import time
 
+import json
 import smtplib
 import os
 from email.mime.multipart import MIMEMultipart
@@ -22,6 +23,17 @@ class ATC_Server(AndroidTC):
     def __init__(self, tc, device,account,version,folder='',subTC='',result_path='',count=0):
         print("Init ATC_Server")
         self.count = count
+        try:
+            with open("config.json", "r") as file:
+                config = json.load(file)
+        
+            self.mail_pw = config["mail_pw"]
+            self.mail_id = config["mail_id"]
+            self.mail_count = config["mail_count"]
+            self.mail_recv = config["mail_recv"]
+            
+        except Exception as e:
+            print(f"예외 발생: {e}")
         super().__init__( tc, device,account ,version,folder,subTC,result_path)
 
     def server_check_tc(self, version, subbTC,driver,folder):
@@ -56,7 +68,7 @@ class ATC_Server(AndroidTC):
 
         msg = MIMEMultipart()
         msg["From"] = sender_email
-        msg["To"] = to_email
+        msg["To"] = ", ".join(to_email)
         msg["Subject"] = subject
 
         # HTML 본문 (CID 참조)
@@ -110,13 +122,18 @@ class ATC_Server(AndroidTC):
             f"/sdcard/DCIM/f{current_time_str}.png",
             local_screenshot_path
         )
-
+        try:
+            with open("config.json", "r") as file:
+                config = json.load(file)
+            self.mail_recv = config["mail_recv"]
+        except Exception as e:
+            print(f"예외 발생: {e}")
         # 실패혹은 1000번에 한번씩 이메일 본문에 이미지 포함하여 전송
-        if not success or self.count % SUCCESS_MAILCOUNT == 0:
+        if not success or self.count % self.mail_count == 0:
         # if True:
             try:
                 self.send_email_with_embedded_image(
-                    to_email="yk.moon@kinemaster.com",
+                    to_email=self.mail_recv,
                     subject=f"[ALERT] Test {status}: {region}",
                     body=f"테스트 {status} 발생:  {region} \n서버 타입: {servertype}",
                     image_path=screenshot
@@ -130,7 +147,6 @@ class ATC_Server(AndroidTC):
         return True  # ✅ 성공이면 True, 실패이면 False
     def chaneg_region(self,driver,region):
         self.driver =driver
-        
         driver.activate_app('com.surfshark.vpnclient.android')
         
         el = self.find_button(driver,'UI','new UiSelector().className("android.widget.ImageView")')

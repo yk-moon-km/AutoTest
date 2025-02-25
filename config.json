@@ -4,6 +4,7 @@
     "km_account":"",
     "jira_url": "https://kinemastercorp.atlassian.net/rest/api/2/search",
     "jira_user":"",
-    "jira_token":""
-
+    "jira_token":"",
+    "mail_count":60,
+    "mail_recv":["yk.moon@kinemaster.com"]
 }
