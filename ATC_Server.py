@@ -12,13 +12,12 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from datetime import datetime
-import base64
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
 from email.mime.image import MIMEImage
 
-SUCCESS_MAILCOUNT = 200
+SUCCESS_MAILCOUNT = 12*2
 class ATC_Server(AndroidTC):
     def __init__(self, tc, device,account,version,folder='',subTC='',result_path='',count=0):
         print("Init ATC_Server")
@@ -46,17 +45,11 @@ class ATC_Server(AndroidTC):
             time.sleep(10)
             self.app_install_login(self.account,driver)
             time.sleep(10)
-        try:
-            driver.terminate_app('com.nexstreaming.app.kinemasterfree')
-        except WebDriverException as e:
-            driver.terminate_app('com.nexstreaming.app.kinemasterfree')
-        driver.activate_app('com.nexstreaming.app.kinemasterfree')
-        time.sleep(10)
         return self.sever_check(driver)
 
     def send_email_with_embedded_image(self,to_email, subject, body, image_path):
-        sender_email = "yk.moon@kinemaster.com"
-        sender_password = ""  # Gmail의 경우 앱 비밀번호 사용
+        sender_email = self.mail_id
+        sender_password = self.mail_pw
 
         smtp_server = "smtp.gmail.com"
         smtp_port = 587
@@ -99,7 +92,7 @@ class ATC_Server(AndroidTC):
             print(f"❌ 이메일 전송 중 오류 발생: {e}")
 
 # 기존 error_screenshot 함수 수정
-    def error_screenshot(self, el, servertype):
+    def error_screenshot(self, el, servertype,region):
         """
         - 성공이면 True 반환
         - 실패이면 False 반환 + 이메일 본문에 스크린샷 포함하여 전송
@@ -110,7 +103,7 @@ class ATC_Server(AndroidTC):
         status = "Success" if success else "Fail"
 
         # 저장할 스크린샷 파일 경로
-        local_screenshot_path = f"{status}_{servertype}_{self.subTC}_{current_time_str}.jpg"
+        local_screenshot_path = f"{status}_{servertype}_{region}_{current_time_str}.jpg"
 
         # 스크린샷 저장
         screenshot = self.take_screenshot(
@@ -120,11 +113,12 @@ class ATC_Server(AndroidTC):
 
         # 실패혹은 1000번에 한번씩 이메일 본문에 이미지 포함하여 전송
         if not success or self.count % SUCCESS_MAILCOUNT == 0:
+        # if True:
             try:
                 self.send_email_with_embedded_image(
                     to_email="yk.moon@kinemaster.com",
-                    subject=f"[ALERT] Test {status}: {self.subTC}",
-                    body=f"테스트 {status} 발생: {self.subTC}\n서버 타입: {servertype}",
+                    subject=f"[ALERT] Test {status}: {region}",
+                    body=f"테스트 {status} 발생:  {region} \n서버 타입: {servertype}",
                     image_path=screenshot
                 )
                 print(f"🚨 실패 알림 이메일 전송 완료: {screenshot}")
@@ -134,39 +128,69 @@ class ATC_Server(AndroidTC):
                 print(f"❌ 이메일 전송 실패: {e}")
                 return False
         return True  # ✅ 성공이면 True, 실패이면 False
-    
+    def chaneg_region(self,driver,region):
+        self.driver =driver
+        
+        driver.activate_app('com.surfshark.vpnclient.android')
+        
+        el = self.find_button(driver,'UI','new UiSelector().className("android.widget.ImageView")')
+        if el:
+            el.click()
+
+        el = self.find_button(driver,'UI',f'new UiSelector().text(\"{region}\")')
+        el.click()
+
+        el = self.find_button(driver,'UI',"new UiSelector().className(\"android.widget.Button\").instance(0)")
+        if el:
+            return True
+        else:
+            return False
+        
+
     def sever_check(self,driver):
         self.driver =driver
-        # 홈
-        # el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/navigation_bar_item_icon_view\").instance(1)")
-        # el.click()
-        # el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/mix_item_download\")")
-        # el.click()
-        try:
-            el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/navigation_bar_item_icon_view\").instance(0)")
-            el.click()
-            el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/iv_thumbnail\").instance(4)")
-            if self.error_screenshot(el, 'mix') is False:
-                return False  # 실패한 경우 바로 반환
-            el.click()  # 성공한 경우 다음 스텝 진행
+        retvalue = True
+        regions = ['Brazil','Egypt','Frankfurt am Main','Delhi','Seoul','United States']
+        for region in regions:
+            if self.chaneg_region(driver,region):
+                try:
+                    driver.terminate_app('com.nexstreaming.app.kinemasterfree')
+                except WebDriverException as e:
+                    driver.terminate_app('com.nexstreaming.app.kinemasterfree')
+                driver.activate_app('com.nexstreaming.app.kinemasterfree')
+                time.sleep(5)
+            #  change server
+                try:
+                    el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/navigation_bar_item_icon_view\").instance(0)",30)
+                    el.click()
+                    el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/iv_thumbnail\").instance(4)",30)
+                    if self.error_screenshot(el, 'mix',region) is False:
+                        retvalue = False
+                        continue
+                    el.click()  # 성공한 경우 다음 스텝 진행
 
-            el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/icon\").instance(0)")
-            el.click()
-            el = self.find_button(driver,'UI','new UiSelector().text("Asset Store")')
-            el.click()  # 성공한 경우 다음 스텝 진행
-            
-            el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/asset_store_image_h_list_asset_item_form_thumbnail\").instance(0)")
-            if self.error_screenshot(el, 'asset') is False:
-                return False  # 실패한 경우 바로 반환
-            el.click()  # 성공한 경우 다음 스텝 진행
-            el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/icon\").instance(0)")
-            el.click()
-            return True
-        except Exception as e:
-            print(f"예외 발생: {e}")
-            self.take_screenshot(f"/sdcard/DCIM/f{self.subTC}.png", f'fail1_{self.tc}_{self.subTC}_{self.capabilities.get("udid")}.jpg')
-            print("Version compare test failed")
-            return False
+                    el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/icon\").instance(0)",30)
+                    el.click()
+                    el = self.find_button(driver,'UI','new UiSelector().text("Asset Store")',30)
+                    el.click()  # 성공한 경우 다음 스텝 진행
+                    
+                    el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/asset_store_image_h_list_asset_item_form_thumbnail\").instance(0)",30)
+                    if self.error_screenshot(el, 'asset',region) is False:
+                        retvalue = False
+                        continue
+                    el.click()  # 성공한 경우 다음 스텝 진행
+                    el = self.find_button(driver,'UI',"new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/icon\").instance(0)",30)
+                    el.click()
+                    
+                except Exception as e:
+                    print(f"예외 발생: {e}")
+                    self.take_screenshot(f"/sdcard/DCIM/f{self.subTC}.png", f'fail1_{self.tc}_{self.subTC}_{self.capabilities.get("udid")}.jpg')
+                    print("Version compare test failed")
+                    retvalue = False
+                    continue
+            else:
+                self.error_screenshot(False, 'vpn',region)
+        return retvalue
 
 
     def run(self):

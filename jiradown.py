@@ -1,16 +1,18 @@
 import os
-import re
 import requests
-
+import json
 
 class JiraDownloader:
     def __init__(self, download_dir="downloads"):
         """
         Jira API 설정 및 초기화
         """
-        self.jira_url = "https://kinemastercorp.atlassian.net/rest/api/2/search"
-        self.jira_user = "yk.moon@kinemaster.com"
-        self.jira_token = "ATATT3xFfGF0SGCp3MpGRT_No1Rc_5ZjoRmYHBileOEFttjDVB3JvnZzQ3Wo7q3s-1Hi5QUXs6MmaQZljhAX4To7iROpFaewNsvVaws5xpMc6fdGh6gq_P50pv91yQHB7bSOatTbgUb_oPtHDBfUaPzSWW9HQJXR-gkdLaM6vk2CrbodWNKiOng=CEC8A430"
+        with open("config.json", "r") as file:
+            config = json.load(file)
+        self.jira_url = config["jira_url"]
+        self.jira_user = config["jira_user"]
+        self.jira_token = config["jira_token"]
+
         self.max_results = 100
         self.download_dir = download_dir
 
@@ -38,7 +40,7 @@ class JiraDownloader:
                 "maxResults": self.max_results,
                 "startAt": start_at
             }
-
+            print(f'query{query}')
             # Jira API 요청
             response = requests.get(
                 self.jira_url,
