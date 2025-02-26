@@ -1,10 +1,13 @@
 {
     "mail_pw": "",
     "mail_id": "",
-    "km_account":"",
-    "jira_url": "https://kinemastercorp.atlassian.net/rest/api/2/search",
     "jira_user":"",
     "jira_token":"",
-    "mail_count":60,
-    "mail_recv":["yk.moon@kinemaster.com"]
+    
+    "km_account":"",
+    "jira_url": "https://kinemastercorp.atlassian.net/rest/api/2/search",
+    "server_timeout":60,
+    "mail_recv":["yk.moon@kinemaster.com"],
+    "server_region":["Brazil","Egypt","Frankfurt am Main","Delhi","Seoul","United States"],
+    "mail_count":100
 }
