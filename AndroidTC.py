@@ -70,7 +70,7 @@ class AndroidTC:
             os.remove(audio2)
         return retvalue
 
-    def find_button(self,driver, appium_type, locator,maxcount=10):
+    def find_button(self,driver, appium_type, locator,maxcount=60):
         count = 0
         while count < maxcount:
             try:
@@ -220,7 +220,7 @@ class AndroidTC:
 
     def app_install_login(self, account,driver):
         self.driver =driver
-        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right",10)
+        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right",20)
         if el:
             el.click()
         el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_deny_button")
