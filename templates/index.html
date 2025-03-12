@@ -52,38 +52,48 @@
         }
     </style>
 
-    <script>
-        function handleActionChange() {
-            var serverCheck = document.querySelector('input[name="action"][value="server"]').checked;
-            var jiraRadio = document.querySelector('input[name="range_type"][value="jira"]');
-            var tcRadio = document.querySelector('input[name="range_type"][value="tc"]');
-            var rangeSection = document.getElementById("tc_input");
-            var countInputContainer = document.getElementById("count_input_container");
+<script>
+    function handleActionChange() {
+        var serverCheck = document.querySelector('input[name="action"][value="server"]').checked;
+        var jiraRadio = document.querySelector('input[name="range_type"][value="jira"]').checked;
+        var tcRadio = document.querySelector('input[name="range_type"][value="tc"]').checked;
+        var rangeSection = document.getElementById("tc_input");
+        var countInputContainer = document.getElementById("count_input_container");
+        var jiraInputContainer = document.getElementById("jira_input_container");
 
-            if (serverCheck) {
-                // "Jira" 및 "TC" 비활성화
-                jiraRadio.disabled = true;
-                tcRadio.disabled = true;
-                rangeSection.style.display = "none";  // TC 선택 숨김
+        if (serverCheck) {
+            // "Jira" 및 "TC" 비활성화
+            document.querySelector('input[name="range_type"][value="jira"]').disabled = true;
+            document.querySelector('input[name="range_type"][value="tc"]').disabled = true;
+            rangeSection.style.display = "none";  // TC 선택 숨김
+            jiraInputContainer.style.display = "none"; // Jira 입력 숨김
+            countInputContainer.style.display = "block"; // Server Count 입력 표시
+        } else {
+            // "Jira" 및 "TC" 활성화
+            document.querySelector('input[name="range_type"][value="jira"]').disabled = false;
+            document.querySelector('input[name="range_type"][value="tc"]').disabled = false;
 
-                // 카운트 입력 필드 표시
-                countInputContainer.style.display = "block";
+            // Jira 선택 시 입력 필드 표시
+            if (jiraRadio) {
+                jiraInputContainer.style.display = "block";
+                rangeSection.style.display = "none"; // TC는 숨김
+            } else if (tcRadio) {
+                jiraInputContainer.style.display = "none";
+                rangeSection.style.display = "block"; // TC 표시
             } else {
-                // "Jira" 및 "TC" 다시 활성화
-                jiraRadio.disabled = false;
-                tcRadio.disabled = false;
-                rangeSection.style.display = "block";  // TC 선택 표시
-
-                // 카운트 입력 필드 숨김
-                countInputContainer.style.display = "none";
+                jiraInputContainer.style.display = "none";
+                rangeSection.style.display = "none";
             }
-        }
 
-        // 페이지 로드 시 실행 (기본 상태 설정)
-        document.addEventListener("DOMContentLoaded", function() {
-            handleActionChange();
-        });
-    </script>
+            // Server Count 입력 숨김
+            countInputContainer.style.display = "none";
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        handleActionChange();
+    });
+</script>
 </head>
 
 <body>
@@ -168,6 +178,11 @@
                     </tr>
                     {% endfor %}
                 </table>
+            </div>
+            <!-- Jira 입력 필드 추가 -->
+            <div id="jira_input_container" style="display: none;">
+                <label for="jira_id">JIRA ID 입력:</label>
+                <input type="text" id="jira_project" name="jira_project" placeholder="JIRA 티켓 ID 입력">
             </div>
 
             <button type="submit">Submit</button>
