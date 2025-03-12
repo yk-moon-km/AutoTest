@@ -15,13 +15,16 @@ import shutil
 class AndroidTC:
     def __init__(self, tc, device,account,version,folder,subTC,result_path):
         print("Init AndroidTC")
+        self.driver = None
         self.test_seting(tc, device,account, version, folder,subTC,result_path)
         self.current_folder = os.path.dirname(__file__)
         
     def __del__(self):
-        print(f'{self.tc} 객체가 소멸되었습니다.')
-        if self.driver :
-            self.driver.quit()
+        if self.driver:
+            try:
+                self.driver.quit()
+            finally:
+                self.driver = None  # 드라이버 객체 초기화
     def test_seting(self, tc,  device,account ,version,folder,subTC,result_path):
         self.tc = tc
         self.account = account
@@ -217,7 +220,7 @@ class AndroidTC:
 
     def app_install_login(self, account,driver):
         self.driver =driver
-        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right",3)
+        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right",10)
         if el:
             el.click()
         el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_deny_button")

@@ -40,7 +40,7 @@ class AtcKinePush(AndroidTC):
     def _create_new_project(self,driver):
         self.driver = driver
         print("_create_new_project AtcKinePush")
-        el = self.find_button(driver,'UI', "new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/navigation_bar_item_icon_view\").instance(2)")
+        el = self.find_button(driver,'UI', "new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/navigation_bar_item_icon_view\").instance(2)",20)
         el.click()
         el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/new_project_button_imageview")
         el.click()

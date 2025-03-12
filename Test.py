@@ -2,20 +2,24 @@ from Android_Test import AndroidTest
 
 devices = ["9C241FFBA001L8"]#15151FDD4001GT"]# , "1A051FDF600BG0"]
 devices = ["15151FDD4001GT"]
-devices = ["15151FDD4001GT"]#15151FDD4001GT"]# , "9C241FFBA001L8"]
+devices = ["10.10.2.79:5555"]#15151FDD4001GT"]# , "9C241FFBA001L8"]
+devices = ["1A051FDF600BG0"]#15151FDD4001GT"]# , "9C241FFBA001L8"]
+
 platform = ["Android", "iOS"]
 TCS = ["versioncompare"]
 TCS = ["server"]
-
+TCS = ["stress"]
+TCS = ["versioncompare"]
 # subTC = ["Test1"]
 # TCS = ["regression_kine"]
 # subTC = ["Test1"]
 # TCS = ["regression"]
 
 subTC = ['kine,KM-11790.kine']
-subTC = ['jira,key=']
+subTC = ['jira,key=KM-11790']
 subTC = ['server,kr']
-
+subTC = ['stress,vocal']
+subTC = ['kine,KM-11790.kine']
 # subTC = ['mix,https://kine.to/template/66e03a361098d00c48cf8933','kine,20240726.kine']
 FOLDER_PATH = 'uploads'
 failcount = 0
@@ -49,7 +53,7 @@ version=['7.5.17.34152.GP.apk']#,'7.4.17.33410.GP.apk']
 count =0
 retvalue = True
 for tc in TCS:
-    test = AndroidTest(tc, account="yk.moon@kinemaster.com", version=version, folder=FOLDER_PATH)
+    test = AndroidTest(tc, account="jichan.ko@kinemaster.com", version=version, folder=FOLDER_PATH)
     for count in subTC:
     
         if onetineTest_cnt == 0 and tc == "downandup":
@@ -60,7 +64,7 @@ for tc in TCS:
         for device in devices:
             test.set_device( device)
             test.set_subTC(count)
-            for c in range(3):
+            for c in range(1):
                 try:
                     retvalue = test.perform_actions(c)
                     # retvalue = test.perform_actions()
@@ -71,6 +75,6 @@ for tc in TCS:
                     failcount += 1
                 else:
                     Successcount += 1
-                
+                print(f"Total :{Successcount + failcount} Success : {Successcount} , Fail : {failcount}")
 
 print(f"Total :{Successcount + failcount} Success : {Successcount} , Fail : {failcount}")
