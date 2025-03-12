@@ -165,6 +165,17 @@ else
     echo "Appium이 이미 설치되어 있습니다."
 fi
 
+# Check if uiautomator2 driver is installed
+echo "Checking installed Appium drivers..."
+INSTALLED_DRIVERS=$(appium driver list --installed)
+
+if [[ ! "$INSTALLED_DRIVERS" == *"uiautomator2"* ]]; then
+    echo "uiautomator2 driver not found. Installing..."
+    appium driver install uiautomator2
+else
+    echo "uiautomator2 driver is already installed."
+fi
+
 # Appium 서버 시작 (새 터미널 창에서 실행)
 osascript <<EOF
 tell application "Terminal"
