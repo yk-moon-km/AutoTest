@@ -220,11 +220,12 @@ class AndroidTC:
 
     def app_install_login(self, account,driver):
         self.driver =driver
-        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right",20)
+        el = self.find_button(driver,'ID', "com.nexstreaming.app.kinemasterfree:id/app_dialog_button_right",60)
         if el:
             el.click()
-        el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_deny_button")
-        el.click()
+        el = self.find_button(driver,'ID', "com.android.permissioncontroller:id/permission_deny_button",10)
+        if el:
+            el.click()
         el = self.find_button(driver,'UI',
                               "new UiSelector().resourceId(\"com.nexstreaming.app.kinemasterfree:id/navigation_bar_item_icon_view\").instance(4)")
         el.click()

@@ -49,7 +49,7 @@ class ATC_Server(AndroidTC):
         try:
             with open("failed_regions.json", "r") as file:
                 return json.load(file)
-        except FileNotFoundError:
+        except Exception as e:
             return {}  # 파일이 없으면 빈 딕셔너리 반환
 
     def save_failed_regions(self):
@@ -59,6 +59,12 @@ class ATC_Server(AndroidTC):
 
     def server_check_tc(self, version, subbTC,driver,folder):
         self.driver = driver
+        if self.count % (self.mail_count*5) ==self.mail_count*5-1:
+
+            self.run_adb_command(f"adb -s {self.capabilities.get('udid')} reboot")
+            self.run_adb_command(f"adb -s {self.capabilities.get('udid')} wait-for-device")
+            # 부팅 후 안정적인 상태가 될 때까지 추가 대기
+            time.sleep(60)
         
         if self.count==0:
             self.apk_install(version,folder)
@@ -127,6 +133,10 @@ class ATC_Server(AndroidTC):
         el = self.find_button(driver,'UI','new UiSelector().className("android.widget.ImageView")')
         if el:
             el.click()
+        el = self.find_button(driver,'xpath','//android.widget.FrameLayout[@resource-id="com.surfshark.vpnclient.android:id/navigationHost"]/androidx.compose.ui.platform.ComposeView/android.view.View/android.widget.ImageView[1]')
+        if el:
+            driver.back()
+
 
         el = self.find_button(driver,'UI',f'new UiSelector().text(\"{region}\")')
         el.click()
@@ -207,7 +217,8 @@ class ATC_Server(AndroidTC):
     def sever_check(self,driver):
         self.driver =driver
         retvalue = True
-        
+
+
         for region in self.server_region:
             if self.chaneg_region(driver,region):
                 try:
